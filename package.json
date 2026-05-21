@@ -1,0 +1,29 @@
+{
+  "name": "assignment",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^0.11.3",
+    "mongoose": "^9.3.3",
+    "nuxt": "^4.4.2",
+    "nuxt-auth-utils": "^0.5.29",
+    "nuxt-google-auth": "^0.1.7",
+    "pinia": "^3.0.4",
+    "pinia-plugin-persistedstate": "^4.7.1",
+    "vue": "^3.5.30",
+    "vue-router": "^5.0.4"
+  },
+  "devDependencies": {
+    "@bootstrap-vue-next/nuxt": "^0.45.3",
+    "@types/node": "^25.5.0",
+    "bootstrap": "^5.3.8",
+    "sass-embedded": "^1.99.0"
+  }
+}
