@@ -1,5 +1,4 @@
-
-import { dbOperations } from "../utils/dbOperation";
+import { dbOperations } from "../utils/dbOperations";
 
 export default defineEventHandler(async(event)=>{
 
@@ -15,7 +14,7 @@ export default defineEventHandler(async(event)=>{
 
   const body = await readBody(event)
 
-  const { name, type, description, repositoryLink } = body;
+  let { name, type, description, repositoryLink } = body;
 
   if(!name || !type || !description || !repositoryLink){
     throw createError({
@@ -23,6 +22,8 @@ export default defineEventHandler(async(event)=>{
       statusMessage: "All fields are required."
     })
   }
+
+  name = name.trim().toLowerCase();
 
   const exists = await dbOperations.findByName(name);
 
@@ -39,7 +40,11 @@ export default defineEventHandler(async(event)=>{
     name,
     type,
     description,
-    repositoryLink
+    repositoryLink,
+    status: "Available",
+    merged: false,
+    mergedBy: null,
+    mergedAt: null
   });
 
 

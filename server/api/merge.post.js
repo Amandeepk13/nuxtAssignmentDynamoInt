@@ -1,4 +1,4 @@
-import { dbOperations } from "../utils/dbOperation";
+import { dbOperations } from "../utils/dbOperations";
 
 export default defineEventHandler(async (event) => {
   const session = await getUserSession(event);
@@ -42,7 +42,7 @@ export default defineEventHandler(async (event) => {
   app.merged = true;
   app.mergedBy = user;
   app.status = "Not Available";
-  app.mergedAt = new Date();
+  app.mergedAt = new Date().toISOString();
 
   await dbOperations.saveApp(app);
 });

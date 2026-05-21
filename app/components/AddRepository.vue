@@ -46,6 +46,7 @@ const resetFields = () => {
   repoName.value = "";
   repoType.value = "";
   repoDesc.value = "";
+  repoLink.value = "";
 };
 
 const isFormCompleted = computed(() => {

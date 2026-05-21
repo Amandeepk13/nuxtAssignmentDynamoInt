@@ -10,6 +10,8 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.1051.0",
+    "@aws-sdk/lib-dynamodb": "^3.1051.0",
     "@pinia/nuxt": "^0.11.3",
     "mongoose": "^9.3.3",
     "nuxt": "^4.4.2",

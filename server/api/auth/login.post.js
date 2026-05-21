@@ -1,4 +1,4 @@
-import { Admin } from "../../models/adminSchema"
+import { dbOperations } from "../../utils/dbOperations";
 
 export default defineEventHandler( async (event) => {
    const body = await readBody(event);
@@ -12,7 +12,7 @@ export default defineEventHandler( async (event) => {
     })
    }
 
-   const isAdmin = await Admin.findOne( { email });
+   const isAdmin = await dbOperations.findAdmin( email );
    const role = isAdmin ? 'admin' : 'user';
 
    await setUserSession(event, {

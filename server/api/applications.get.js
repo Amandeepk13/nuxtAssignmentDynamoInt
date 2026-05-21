@@ -1,4 +1,4 @@
-import { dbOperations } from "../utils/dbOperation";
+import { dbOperations } from "../utils/dbOperations"
 
 export default defineEventHandler(async(event) => {
 
