@@ -1,5 +1,5 @@
 import { dynamoDB } from "./dbconnection";
-import { ScanCommand,GetCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
+import { ScanCommand,GetCommand, PutCommand, UpdateCommand} from "@aws-sdk/lib-dynamodb";
 
 
 const applicationTable = process.env.APPLICATIONS_TABLE;
@@ -56,9 +56,25 @@ export const dbOperations = {
 
     try{
       await dynamoDB.send(
-        new PutCommand({
+        new UpdateCommand({
           TableName: applicationTable,
-          Item: application
+          Key: {
+            name : application.name
+          },
+          UpdateExpression : ` SET merged= :merged, mergedAt= :mergedAt, mergedBy= :mergedBy, #status= :status `,
+
+          ExpressionAttributeNames:{
+            "#status" : "status"
+          },
+          
+          ExpressionAttributeValues: {
+            ":merged" : application.merged,
+            ":mergedBy" : application.mergedBy,
+            ":mergedAt" : application.mergedAt,
+            ":status" : application.status,
+          },
+
+          ReturnValues: "ALL_NEW"
         })
       );
     } catch(err){
