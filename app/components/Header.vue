@@ -1,6 +1,6 @@
 <script setup>
 import mergeIcon from '~/assets/img/git-mergeIcon.svg'
-import pushIcon from '~/assets/img/git-pushicon.svg'
+import pushIcon from '~/assets/img/git-pushIcon.svg'
 
  const { user, clear } = useUserSession()
  

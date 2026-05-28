@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'nuxt-auth-utils',
     'nuxt-google-auth',
-    
+    '@bootstrap-vue-next/nuxt'
   ],
 
   googleAuth: {
@@ -22,19 +22,10 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-
     session: {
       password: process.env.NUXT_SESSION_PASSWORD || ''
     }
   },
 
-  vite: {
-    optimizeDeps: {
-      include: [
-        'bootstrap-vue-next',
-        'bootstrap/dist/js/bootstrap.bundle.min.js' 
-      ]
-    }
-  }
 
 })
