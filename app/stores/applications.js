@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-export const useApplicationStore = defineStore("applicationsStore", {
+export const useApplicationsStore = defineStore("applications", {
   state: () => ({
     applicationsList: [],
     search: "",
@@ -14,7 +14,7 @@ export const useApplicationStore = defineStore("applicationsStore", {
       return state.applicationsList.filter(app => {
         const matchedSearch = app.name.toLowerCase().includes(state.search.toLowerCase());
         const matchedType = state.selectedType === "All Types" || app.type.toLowerCase() === state.selectedType.toLowerCase();
-        const matchedStatus = state.selectedStatus === "All Status" || app.status === state.selectedStatus;
+        const matchedStatus = state.selectedStatus === "All Status" || app.status.toLowerCase() === state.selectedStatus.toLowerCase();
 
         return matchedSearch && matchedType && matchedStatus;
     });

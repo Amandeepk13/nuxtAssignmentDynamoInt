@@ -4,7 +4,7 @@
   // middleware:'auth'
   // })
 
-  const appStore = useApplicationStore()
+  const appStore = useApplicationsStore()
   const currentlyActive = ref("dashboard")
   const isSidebarOpen = ref(true)
 

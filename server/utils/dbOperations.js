@@ -1,9 +1,8 @@
 import { dynamoDB } from "./dbconnection";
-import { ScanCommand,GetCommand, PutCommand, UpdateCommand} from "@aws-sdk/lib-dynamodb";
+import { QueryCommand ,GetCommand, PutCommand, UpdateCommand} from "@aws-sdk/lib-dynamodb";
 
 
-const applicationTable = process.env.APPLICATIONS_TABLE;
-const adminTable = process.env.ADMINS_TABLE;
+const applicationTable = process.env.MERGE_TOKEN_REPOSITORY_TABLE;
 
 export const dbOperations = {
 
@@ -11,9 +10,16 @@ export const dbOperations = {
 
     try {
 
-      const data = await dynamoDB.send( new ScanCommand({
-        TableName: applicationTable
-      }) );
+      const data = await dynamoDB.send( 
+        new QueryCommand({
+          TableName: applicationTable,
+
+          KeyConditionExpression: "PK = :pk",
+          ExpressionAttributeValues: {
+            ":pk" : "repo"
+          }
+        }) 
+      );
 
     return data.Items;
     } catch (err){
@@ -29,7 +35,8 @@ export const dbOperations = {
       new GetCommand({
         TableName: applicationTable,
         Key: {
-          name
+          PK : "repo",
+          SK : `repo#${name}`
         }
       })
     );
@@ -43,7 +50,11 @@ export const dbOperations = {
       await dynamoDB.send(
         new PutCommand({
           TableName: applicationTable,
-          Item: appData
+          Item: {
+            PK : "repo",
+            SK : `repo#${appData.name}`,
+            ...appData
+          }
         })
       );
     } catch(err){
@@ -58,9 +69,12 @@ export const dbOperations = {
       await dynamoDB.send(
         new UpdateCommand({
           TableName: applicationTable,
+
           Key: {
-            name : application.name
+            PK : "repo",
+            SK : `repo#${application.name}`
           },
+
           UpdateExpression : ` SET merged= :merged, mergedAt= :mergedAt, mergedBy= :mergedBy, #status= :status `,
 
           ExpressionAttributeNames:{
@@ -88,9 +102,10 @@ export const dbOperations = {
     try {
       const data = await dynamoDB.send(
         new GetCommand({
-          TableName: adminTable,
+          TableName: applicationTable,
           Key: {
-            email
+            PK : "user#admin",
+            SK : email
           }
         })
       );

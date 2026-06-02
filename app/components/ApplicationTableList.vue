@@ -1,6 +1,6 @@
 <script setup>
 
-const store = useApplicationStore()
+const store = useApplicationsStore()
 const {user} = useUserSession()
 
 defineProps(["appsList"])

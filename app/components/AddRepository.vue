@@ -10,7 +10,7 @@ const repoLink = ref("");
 
 const isCreating = ref(false);
 
-const appStore = useApplicationStore();
+const appStore = useApplicationsStore();
 
 const createRepo = async () => {
   try {

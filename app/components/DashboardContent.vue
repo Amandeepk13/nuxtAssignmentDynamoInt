@@ -1,5 +1,5 @@
 <script setup>
-const store = useApplicationStore();
+const store = useApplicationsStore();
 const loader = useGlobalLoader();
 
 let interval = null;

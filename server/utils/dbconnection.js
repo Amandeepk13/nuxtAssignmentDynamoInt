@@ -8,6 +8,5 @@ const client = new DynamoDBClient({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
   }
 })
-console.log("DynamoDB Connected")
 
 export const dynamoDB = DynamoDBDocumentClient.from(client);
