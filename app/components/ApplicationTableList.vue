@@ -110,7 +110,7 @@ const formatDateTime = (date) => {
         <td>
           <div class="repoLinkColumn">
 
-          <a :href="application.repositoryLink" target="_blank" rel="noopenor no-referrer" aria-label="Open repository">
+          <a :href="application.repositoryLink" target="_blank" rel="noopenor noreferrer" aria-label="Open repository">
             <img src="../assets/img/redirectLinkIcon.svg" class="repoLinkIcon" aria-hidden="true"/>
 
           </a>
