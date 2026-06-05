@@ -14,11 +14,7 @@ export const useAuth = () => {
     await refreshSession();
     
     
-    if(res.role === 'admin'){
-      await navigateTo('/admin')
-    } else {
-      await navigateTo('/')
-    }
+    await navigateTo('/dashboard')
 
   };
 

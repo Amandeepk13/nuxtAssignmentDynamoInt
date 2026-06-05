@@ -1,26 +1,29 @@
 <script setup>
 
- 
+  const { isLoading } = useGlobalLoader()
+  const { user } = useUserSession()
 
-  const appStore = useApplicationsStore()
-  const currentlyActive = ref("dashboard")
   const isSidebarOpen = ref(true)
 
-  const goToAddRepository = () => {
-    currentlyActive.value = "addRepository"
-  }
-  const goToDashboard = () => {
-    currentlyActive.value = "dashboard"
-  }
+  const route = useRoute()
+
   const toggleSidebar = () => {
     isSidebarOpen.value = !isSidebarOpen.value
   }
+
+  const goToDashboard = () => {
+    navigateTo('/dashboard')
+  }
+
+  const goToAddRepository = () => {
+   navigateTo('/addrepository')
+  }
+
 </script>
 
 <template>
-  <div class="adminPage container-fluid">
 
-    <aside class="sidebar" :class="{ collapsed: !isSidebarOpen }">
+  <aside class="sidebar" :class="{ collapsed: !isSidebarOpen }" v-if="user?.role === 'admin'">
 
       <button class="toggleBtn" @click="toggleSidebar" :aria-label="isSidebarOpen ? 'Close sidebar' : 'Open sidebar'" >
         <img src="../assets/img/menuIcon.svg" aria-hidden="true"/>
@@ -30,54 +33,25 @@
         <ul>
           <li>
             <button 
-            class="linkBtn dashboard" :class=" currentlyActive === 'dashboard' ? 'active' : '' " @click="goToDashboard" aria-label="Click to activate Dashboard"> Dashboard
+            class="linkBtn dashboard" :class= "route.path === '/dashboard' ? 'active' : '' " @click="goToDashboard" aria-label="Click to activate Dashboard"> Dashboard
             </button>
           </li>
           
           <li>
             <button 
-            class="linkBtn addrepo" :class=" currentlyActive === 'addRepository' ? 'active' : '' " @click="goToAddRepository"  aria-label="Click to activate Add Repository Form">Add Repository
+            class="linkBtn addrepo" :class="route.path === '/addrepository'  ? 'active' : '' " @click="goToAddRepository"  aria-label="Click to activate Add Repository Form">Add Repository
             </button>
           </li>
         </ul>
       </nav>
        
     </aside>
-
-    <section class = "content">
-      
-
-      <div class="contentContainer" v-show="currentlyActive === 'addRepository'">
-        
-         <h1 tabindex="0">Admin Panel</h1>
-         <p tabindex="0">Manage repositories from a single admin workspace</p>
-
-         <AddRepository />
-         
-       
-      </div>
-
-      <div class="adminDashboard" v-show="currentlyActive === 'dashboard'">
-        <DashboardContent  :appsList="appStore.filteredApplications" />
-      </div>
-    </section>
-
-  </div>
-
 </template>
 
 <style lang="scss" scoped>
-  .adminPage{
-    display:flex;
-    
-    margin: 2px;
-    flex-direction: row;
-    width:100%;
-    padding:0;
-    overflow-x:hidden;
-  }
-   
-   .sidebar{
+
+
+  .sidebar{
      width:220px;
      min-height: 100vh;
      padding:20px 0px;
@@ -91,8 +65,7 @@
       .sidebarContainer{
         opacity:0;
         visibility:hidden;
-        
-     }
+      }
 
      }
 
@@ -113,7 +86,7 @@
         transition: 0.2s ease;
       }
 
-     .sidebarContainer{
+    .sidebarContainer{
       display:flex; 
       flex-direction: column;
       padding:2px 6px;
@@ -173,37 +146,10 @@
       min-height: 100vh;
       position: relative;
     }
-   
-    .contentContainer{
-      width:100%;
-      max-width:100%;
-      box-sizing:border-box;
-      display:flex;
-      flex-direction:column;
-      
-      
 
-      h1{
-        font-size:32px;
-        margin-bottom:2px;
-      }
-      p{
-        font-size:14px;
-        color:gray;
-        
-      }
-      
-      
-    }
-    .adminDashboard{
-      display:flex;
-      align-items: center;
-      justify-content: center;
-      padding: 4px;
-    }
-
-
-@media (max-width: 768px){
+  
+  // responsiveness to the page - sidebar wrt outer card 
+  @media (max-width: 768px){
 
   .adminPage{
     flex-direction: column;
@@ -246,6 +192,5 @@
     min-height:auto ;
   }
 }
-  
 
 </style>

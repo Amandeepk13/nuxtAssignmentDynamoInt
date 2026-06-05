@@ -9,8 +9,8 @@ export default defineNuxtRouteMiddleware(async(to)=> {
     return navigateTo('/login')
   }
 
-  if(to.path.startsWith('/admin') && user.value.role !== 'admin'){
-    return navigateTo('/')
+  if(to.path.startsWith('/addrepository') && user.value.role !== 'admin'){
+    return navigateTo('/dashboard')
   }
 
   

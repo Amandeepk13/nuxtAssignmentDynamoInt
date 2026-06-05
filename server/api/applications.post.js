@@ -4,6 +4,14 @@ export default defineEventHandler(async(event)=>{
 
  try{
 
+
+  if (!event.context.user || event.context.user.role !== "admin") {
+    throw createError({
+      statusCode: 403,
+      statusMessage: "Access Denied. Only Admins are authorized"
+    });
+  }
+
   //parsing the request body from client and validating
   const body = await readBody(event)
   let { name, type, description, repositoryLink } = body;

@@ -8,15 +8,6 @@ export default defineEventHandler(async (event) => {
   const session = await getUserSession(event);
   event.context.user = session?.user;
 
-  // rules for admin
-  if(event.path.startsWith('/api/applications')){
-
-    if(!event.context.user || event.context.user.role !== 'admin'){
-      throw createError({
-        statusCode: 403,
-        statusMessage: 'Access Denied. Only Admins are autorized.'
-      })
-    }
-  }
+  
 
 }) 

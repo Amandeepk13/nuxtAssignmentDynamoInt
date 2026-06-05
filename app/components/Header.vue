@@ -24,7 +24,7 @@ import pushIcon from '~/assets/img/git-pushIcon.svg'
 }
 
   const route = useRoute()
-  const isAdmin = computed( () => route.path === '/admin')
+  const isAdmin = computed( () => route.path === '/addrepository')
 
   
 </script>
@@ -61,7 +61,8 @@ import pushIcon from '~/assets/img/git-pushIcon.svg'
         <ul class="dropdown-menu customDropdownMenu">
           <li> 
             <button @click="handleLogout" class="dropdown-item LogoutBtn" type="button" aria-label="Click to logout" >
-              <img src="../assets/img/logout.svg" alt="logout" class="logoutIcon" aria-hidden="true"/> Logout 
+              <img src="../assets/img/logout.svg" alt="logout" class="logoutIcon" aria-hidden="true"/> 
+              <span class="d-none d-md-inline"> Logout</span> 
             </button>
           </li> 
         </ul>
@@ -70,4 +71,7 @@ import pushIcon from '~/assets/img/git-pushIcon.svg'
       </div>
      </header>
 </template>
+
+<style lang="scss" src="../assets/scss/header.scss">
+</style>
 
