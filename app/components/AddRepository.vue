@@ -1,7 +1,6 @@
 <script setup>
-const showMsg = ref(false);
-const msg = ref("");
-const isError = ref(false);
+
+const { showMsg, message, isError, showSuccess, showError, closeNotification } = useNotification()
 
 const repoName = ref("");
 const repoType = ref("");
@@ -17,23 +16,21 @@ const createRepo = async () => {
     isCreating.value = true;
     isError.value = false;
 
-    await appStore.createApplication({
+    const response = await appStore.createApplication({
       name: repoName.value,
       type: repoType.value,
       description: repoDesc.value,
       repositoryLink: repoLink.value
     });
 
-    msg.value = `'${repoName.value}' is successfully created`;
-    showMsg.value = true;
-
+    showSuccess(response.message)
+    
     resetFields();
 
   } catch (err) {
-    msg.value = `'${repoName.value}' is already present`;
-    isError.value = true;
-    showMsg.value = true;
-
+    
+    showError(err?.data?.message)
+    
   } finally{
     isCreating.value = false;
   }
@@ -162,8 +159,8 @@ const isFormCompleted = computed(() => {
 
       <div v-if="showMsg" class="alert notification d-flex justify-content-between align-items-center"
         :class="isError ? 'alert-danger' : 'alert-success'" >
-        <span>{{ msg }}</span>
-        <span class="closeBtn" @click="showMsg = false">
+        <span>{{ message }}</span>
+        <span class="closeBtn" @click="closeNotification">
           <img src="../assets/img/crossIcon.svg" aria-hidden="true"/>
         </span>
       </div>

@@ -23,7 +23,7 @@ export const dbOperations = {
 
     return data.Items;
     } catch (err){
-      console.log("Error whle fetching:", err)
+      console.error("Error whle fetching:", err)
       throw err
     }
 
@@ -58,41 +58,63 @@ export const dbOperations = {
         })
       );
     } catch(err){
-       console.log("Error while creating: ", err)
+       console.error("Error while creating: ", err)
        throw err
     }
   },
 
-  async saveApp(application) {
+  async saveApp(application, requestingUser) {
 
     try{
-      await dynamoDB.send(
-        new UpdateCommand({
-          TableName: applicationTable,
 
-          Key: {
-            PK : "repo",
-            SK : `repo#${application.name}`
-          },
+      const updateParams = {
+        TableName: applicationTable,
+        Key : {
+          PK : "repo",
+          SK : `repo#${application.name}`
+        },
+        UpdateExpression: `SET merged= :merged, mergedAt= :mergedAt, mergedBy= :mergedBy, #status= :status`,
 
-          UpdateExpression : ` SET merged= :merged, mergedAt= :mergedAt, mergedBy= :mergedBy, #status= :status `,
+        ExpressionAttributeNames : {
+          "#status" : "status"
+        },
 
-          ExpressionAttributeNames:{
-            "#status" : "status"
-          },
-          
-          ExpressionAttributeValues: {
-            ":merged" : application.merged,
-            ":mergedBy" : application.mergedBy,
-            ":mergedAt" : application.mergedAt,
-            ":status" : application.status,
-          },
+        ReturnValues : "ALL_NEW"
+      }
 
-          ReturnValues: "ALL_NEW"
-        })
+      if( application.merged){
+        // taking the token 
+        updateParams.ConditionExpression = "merged = :false"; 
+        //it check if someone other also try to clock - race condition
+        
+        updateParams.ExpressionAttributeValues = {
+          ":merged" : application.merged,
+          ":mergedBy" : application.mergedBy,
+          ":mergedAt" : application.mergedAt,
+          ":status" : application.status,
+          ":false" : false // nobody yet taken
+        }
+      } else {
+        // releasing the token
+
+        // if same user - only then release can happen
+        updateParams.ConditionExpression = "mergedBy = :currentUser";
+        updateParams.ExpressionAttributeValues = {
+          ":merged": application.merged,
+          ":mergedBy" : application.mergedBy, 
+          ":mergedAt" : application.mergedAt,
+          ":status" : application.status,
+          ":currentUser" : requestingUser 
+        }
+      }
+
+      const data = await dynamoDB.send(
+        new UpdateCommand(updateParams)
       );
+      return data.Attributes;
+
     } catch(err){
-      console.log("Error while saving reposiotry: ", err)
+      console.error("Error while saving reposiotry: ", err)
       throw err
     }
   },
@@ -112,7 +134,7 @@ export const dbOperations = {
 
       return data.Item;
     } catch(err){
-      console.log("Error while finding admin: ", err)
+      console.error("Error while finding admin: ", err)
       throw err
     }
   }

@@ -3,7 +3,7 @@
   display:flex;
   justify-content: center;
   background-color: white;
-  font-family: Arial, Helvetica, sans-serif;
+  
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   border-radius:6px;
   min-height: 60px;
@@ -109,7 +109,7 @@
       padding: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.12);
     
-      .LogoutBtn, .menuBtn{
+      .LogoutBtn{
         background-color: rgba(223, 227, 230, 0.589);
         padding:8px;
         border-radius: 8px;

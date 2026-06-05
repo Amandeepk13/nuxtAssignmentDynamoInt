@@ -2,19 +2,16 @@ import { dbOperations } from "../utils/dbOperations";
 
 export default defineEventHandler(async(event)=>{
 
-  const session = await getUserSession(event);
+ try{
 
-  if(!session.user || session.user.role !== "admin"){
-    throw createError({
-      statusCode: 403,
-      statusMessage: "Access Denied. Only Admins are authorized"
-    })
-  }
-
-
+  //parsing the request body from client and validating
   const body = await readBody(event)
-
   let { name, type, description, repositoryLink } = body;
+
+  name = name.trim().toLowerCase();
+  type = type.trim();
+  description = description.trim();
+  repositoryLink = repositoryLink.trim();
 
   if(!name || !type || !description || !repositoryLink){
     throw createError({
@@ -22,8 +19,34 @@ export default defineEventHandler(async(event)=>{
       statusMessage: "All fields are required."
     })
   }
+  
 
-  name = name.trim().toLowerCase();
+  const validTypes = [ "Applications", "Stacks", "Library" ];
+
+  if (!validTypes.includes(type)) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: "Invalid repository type."
+      });
+  }
+
+  if( description.length > 100){
+    throw createError({
+       statusCode: 400,
+       statusMessage: "The description should be less than 100 words"
+    })
+  }
+
+  try {
+    new URL(repositoryLink);
+  } catch {
+      throw createError({
+        statusCode: 400,
+        statusMessage: "Invalid repository URL."
+      });
+  }
+
+  
 
   const exists = await dbOperations.findByName(name);
 
@@ -31,12 +54,12 @@ export default defineEventHandler(async(event)=>{
 
     throw createError({
       statusCode: 400,
-      statusMessage: "This Repository is already present"
+      statusMessage: `'${name}' repository already exists`
     });
 
   }
 
-  await dbOperations.createApp({
+  const application = {
     name,
     type,
     description,
@@ -45,9 +68,28 @@ export default defineEventHandler(async(event)=>{
     merged: false,
     mergedBy: null,
     mergedAt: null
-  });
+  };
+
+  await dbOperations.createApp(application);
 
 
-  return { success: true, message: "Repository created successfully" };
+  return { 
+    success: true,
+    statusCode: 201,
+    message: `'${name}' repository created successfully`,
+  };
+
+} catch (err){
+
+  if (err.statusCode) { // already defined one's.. like duplicate existing error
+    throw err;
+  }
+
+    throw createError({
+      statusCode: 500,
+      statusMessage:
+        "Unable to create repository."
+    });
+}
   
 })

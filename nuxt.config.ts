@@ -4,7 +4,8 @@ export default defineNuxtConfig({
   devtools: false,
 
   css: [
-    "bootstrap/dist/css/bootstrap.min.css"
+    "bootstrap/dist/css/bootstrap.min.css",
+    '~/assets/scss/global.scss'
   ],
 
   
@@ -26,6 +27,16 @@ export default defineNuxtConfig({
       password: process.env.NUXT_SESSION_PASSWORD || ''
     }
   },
+
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@use "~/assets/scss/variables.scss" as *;`
+        }
+      }
+    }
+  }
 
 
 })

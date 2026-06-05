@@ -1,8 +1,5 @@
 <script setup>
 
-// definePageMeta({
-//   middleware:'auth'
-// })
 
 </script>
 
@@ -18,12 +15,12 @@
 
 .mainContainer{
  min-height: 100vh;
- background-color: rgba(240, 241, 243, 0.338);
+ background-color: $bgcolor-primary;
  padding:20px;
  display: flex;
  justify-content: center;
  margin:4px;
- font-family: Arial, Helvetica, sans-serif;
+
  
 }
 

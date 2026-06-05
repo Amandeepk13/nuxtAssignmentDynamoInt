@@ -2,9 +2,8 @@ import { dbOperations } from "../utils/dbOperations"
 
 export default defineEventHandler(async(event) => {
 
-  const session = await getUserSession(event);
 
-  if(!session.user){
+  if(!event.context.user){
     throw createError({
       statusCode: 401,
       statusMessage: "Access Denied.Please Authenticate first"

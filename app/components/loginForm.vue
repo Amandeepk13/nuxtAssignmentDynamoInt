@@ -87,13 +87,13 @@ const onError = (err) => {
 
 .title{
   font-size:32px;
-  font-family:Arial, Helvetica, sans-serif;
+  
   margin: 10px;
   padding:8px;
 }
 .subTitle{
   font-size: 16px;
-  font-family:Arial, Helvetica, sans-serif;
+  
   color:gray;
   padding:8px;
 }

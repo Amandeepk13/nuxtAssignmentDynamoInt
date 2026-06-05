@@ -4,7 +4,7 @@ const loader = useGlobalLoader()
 
 <template>
     <NuxtRouteAnnouncer />
-    <appLoader v-if="loader" />
+    <AppLoader v-if="loader" />
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

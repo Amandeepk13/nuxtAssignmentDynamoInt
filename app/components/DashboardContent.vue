@@ -7,7 +7,6 @@ let interval = null;
 onMounted(async () => {
   loader.value = true;
   
-
   try {
     await store.fetchApplications();
   } finally {
@@ -16,12 +15,15 @@ onMounted(async () => {
 
   interval = setInterval(() => {
     store.fetchApplications();
-  }, 5000);
+  }, 3000);
+
+  
 });
 
 onUnmounted(async () => {
   clearInterval(interval);
 });
+
 </script>
 
 <template>

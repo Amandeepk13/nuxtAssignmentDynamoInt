@@ -1,8 +1,6 @@
 <script setup>
 
-  // definePageMeta({
-  // middleware:'auth'
-  // })
+ 
 
   const appStore = useApplicationsStore()
   const currentlyActive = ref("dashboard")
@@ -30,12 +28,16 @@
 
       <nav class="sidebarContainer">
         <ul>
-          <li 
-            class="linkBtn dashboard" :class=" currentlyActive === 'dashboard' ? 'active' : '' " @click="goToDashboard" tabindex="0" aria-label="Click to activate Dashboard"> Dashboard
+          <li>
+            <button 
+            class="linkBtn dashboard" :class=" currentlyActive === 'dashboard' ? 'active' : '' " @click="goToDashboard" aria-label="Click to activate Dashboard"> Dashboard
+            </button>
           </li>
           
-          <li 
-            class="linkBtn addrepo" :class=" currentlyActive === 'addRepository' ? 'active' : '' " @click="goToAddRepository" tabindex="0" aria-label="Click to activate Add Repository Form">Add Repository
+          <li>
+            <button 
+            class="linkBtn addrepo" :class=" currentlyActive === 'addRepository' ? 'active' : '' " @click="goToAddRepository"  aria-label="Click to activate Add Repository Form">Add Repository
+            </button>
           </li>
         </ul>
       </nav>
@@ -67,7 +69,7 @@
 <style lang="scss" scoped>
   .adminPage{
     display:flex;
-    font-family: Arial, Helvetica, sans-serif;
+    
     margin: 2px;
     flex-direction: row;
     width:100%;
@@ -118,7 +120,7 @@
 
       ul{
         padding: 2px;
-
+        list-style: none;
         li{
           margin: 4px;
         }
@@ -165,7 +167,7 @@
       margin:2px;
       box-sizing: border-box; 
       box-shadow: -2px 0 2px rgba(121, 121, 123, 0.345);
-      background-color: rgba(240, 241, 243, 0.338);
+      background-color: $bgcolor-primary;
       border-radius:8px;
       padding: 10px 28px;
       min-height: 100vh;

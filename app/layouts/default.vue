@@ -18,5 +18,5 @@
   </div>
 </template>
 
-<style lang="scss" src="../assets/css/header.scss">
+<style lang="scss" src="../assets/scss/header.scss">
 </style>

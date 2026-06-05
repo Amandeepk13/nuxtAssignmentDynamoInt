@@ -5,31 +5,20 @@ const {user} = useUserSession()
 
 defineProps(["appsList"])
 
-const message = ref("")
-const showMsg = ref(false)
-const isError = ref(false)
+const { showMsg, message, isError, showSuccess, showError, closeNotification } = useNotification()
 
-const handleMerge = async (applicationName, application) =>{
+const handleMerge = async (applicationName) =>{
   try{
-    await store.mergeApplication(applicationName);
+    const response = await store.mergeApplication(applicationName);
 
-    if(!application.merged){
-       message.value = `'${ applicationName }' merging in process by you ! `
-       isError.value = false
-       showMsg.value = true
-    }
+    showSuccess(response.message)
 
   } catch(err){
 
-    const mergedUser = err.data.data.mergedBy;
-    message.value = `'${ applicationName }' is already in merging by ${ mergedUser } !`
-    isError.value = true
-    showMsg.value = true
+    showError(err?.data?.statusMessage)
+    
   }
 
-  setTimeout(() => {
-  showMsg.value = false
-  }, 5000);
 }
 
 const formatDateTime = (date) => {
@@ -102,7 +91,7 @@ const formatDateTime = (date) => {
 
         <td><button @click="handleMerge(application.name,application)" :disabled="application.merged && application.mergedBy !== user.name"  :class="application.merged ? 'mergedBtn' : 'mergeBtn'" role="button" :aria-label= "application.merged ? 'Token is taken' : 'Click to take token'" >
           <div class="btnContent">
-            <img src="../assets/img/lock.svg"/>
+            <img src="../assets/img/lock.svg" aria-hidden = "true"/>
             <span>{{ application.merged ? 'Taken' : 'Take' }}</span>
           </div> </button>
         </td>
@@ -110,7 +99,7 @@ const formatDateTime = (date) => {
         <td>
           <div class="repoLinkColumn">
 
-          <a :href="application.repositoryLink" target="_blank" rel="noopenor no-referrer" aria-label="Open repository">
+          <a :href="application.repositoryLink" target="_blank" rel="noopenor noreferrer" aria-label="Open repository">
             <img src="../assets/img/redirectLinkIcon.svg" class="repoLinkIcon" aria-hidden="true"/>
 
           </a>
@@ -126,7 +115,7 @@ const formatDateTime = (date) => {
    <div v-if="showMsg" class="alert notification d-flex justify-content-between align-items-center"
   :class="isError ? 'alert-danger' : 'alert-success'">
      <span>{{ message }}</span>
-     <span class="closeBtn" @click="showMsg = false"><img src="../assets/img/crossIcon.svg" aria-hidden="true" />
+     <span class="closeBtn" @click="closeNotification"><img src="../assets/img/crossIcon.svg" aria-hidden="true" />
      </span>
    </div>
 

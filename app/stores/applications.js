@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 
+// applications store
 export const useApplicationsStore = defineStore("applications", {
   state: () => ({
     applicationsList: [],
@@ -8,7 +9,7 @@ export const useApplicationsStore = defineStore("applications", {
     selectedStatus: "All Status"
   }),
 
-
+  // computed properties
   getters: {
     filteredApplications(state) {
       return state.applicationsList.filter(app => {
@@ -21,6 +22,7 @@ export const useApplicationsStore = defineStore("applications", {
     }
   },
 
+  
   actions: {
 
     async fetchApplications() {
@@ -28,20 +30,21 @@ export const useApplicationsStore = defineStore("applications", {
         const data = await $fetch('/api/applications');
         this.applicationsList = data;
 
+        return data;
+
       } catch(err){
         console.error(err);
+        throw err;
       }
     },
 
     async mergeApplication(applicationName){
 
       try{
-        await $fetch("/api/merge", {
-        method: "POST",
-        body: { applicationName}
-      });
-
-      await this.fetchApplications();
+        return await $fetch("/api/merge", {
+          method: "POST",
+          body: { applicationName}
+        });
 
       } catch(err){
         console.error(err);
@@ -51,12 +54,11 @@ export const useApplicationsStore = defineStore("applications", {
 
     async createApplication(data){
       try{
-        await $fetch('/api/applications', {
-        method: 'POST',
-        body: data
+        return await $fetch('/api/applications', {
+          method: 'POST',
+          body: data
 
-      })
-      await this.fetchApplications();
+        })
       
      } catch(err){
        console.error(err);
