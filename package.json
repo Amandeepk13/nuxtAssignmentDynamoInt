@@ -20,7 +20,8 @@
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
     "vue": "^3.5.30",
-    "vue-router": "^5.0.4"
+    "vue-router": "^5.0.4",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@bootstrap-vue-next/nuxt": "^0.45.3",
