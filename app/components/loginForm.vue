@@ -3,7 +3,6 @@
 const {login} = useAuth()
 const loader = useGlobalLoader()
 
-
 const onSuccess = async(e) => {
   // console.log("user claims", e.claims)
   try{
