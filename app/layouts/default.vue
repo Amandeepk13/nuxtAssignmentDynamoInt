@@ -49,7 +49,7 @@
       box-sizing: border-box; 
       box-shadow: -2px 0 2px rgba(121, 121, 123, 0.345);
       background-color: $bgcolor-primary;
-      border-radius:8px;
+      border-radius: $border-radius-md;
       padding: 10px 28px;
       min-height: 100vh;
       position: relative;

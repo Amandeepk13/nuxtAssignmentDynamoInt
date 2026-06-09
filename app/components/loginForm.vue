@@ -60,8 +60,8 @@ const onError = (err) => {
   max-width: 450px;
   text-align: center;
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2); 
+  border-radius: $border-radius-lg;
+  box-shadow: $box-shadow-primary; 
 }
 
 .mergeLogoContainer{

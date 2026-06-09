@@ -171,9 +171,9 @@ onUnmounted(async () => {
   .searchInput {
     width: 100%;
     padding: 10px 12px 10px 35px;
-    border-radius: 8px;
+    border-radius: $border-radius-md;
     border: none;
-    background-color: rgba(223, 227, 230, 0.374);
+    background-color: $bgcolor-ofEachFields;
     box-sizing: border-box;
   }
 }
@@ -185,9 +185,9 @@ onUnmounted(async () => {
 
 .filterBtn {
   width: 100%;
-  background-color: rgba(223, 227, 230, 0.374);
+  background-color: $bgcolor-ofEachFields;
   border: none;
-  border-radius: 12px;
+  border-radius: $border-radius-lg;
   padding: 10px 14px;
   color: black;
   display: flex;
@@ -210,12 +210,12 @@ onUnmounted(async () => {
 .customMenu {
   width: 100%;
   border: none;
-  border-radius: 14px;
+  border-radius: $border-radius-lg;
   padding: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  box-shadow: $box-shadow-md;
 
   .dropdown-item {
-    border-radius: 10px;
+    border-radius: $border-radius-lg;
     padding: 10px 14px;
     cursor: pointer;
 

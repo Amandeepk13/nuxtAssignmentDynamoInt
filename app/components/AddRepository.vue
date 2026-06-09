@@ -160,9 +160,9 @@ const isFormCompleted = computed(() => {
       <div v-if="showMsg" class="alert notification d-flex justify-content-between align-items-center"
         :class="isError ? 'alert-danger' : 'alert-success'" >
         <span>{{ message }}</span>
-        <span class="closeBtn" @click="closeNotification">
+        <button type="button" aria-label="Close Notification" class="closeBtn" @click="closeNotification">
           <img src="../assets/img/crossIcon.svg" aria-hidden="true"/>
-        </span>
+        </button>
       </div>
     </div>
   </div>
@@ -171,8 +171,8 @@ const isFormCompleted = computed(() => {
 <style lang="scss" scoped>
 .innerContainer {
   background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
+  box-shadow: $box-shadow-lg;
+  border-radius: $border-radius-md;
   width: 100%;
   padding: 12px 28px 28px;
   margin: 8px;
@@ -189,7 +189,7 @@ const isFormCompleted = computed(() => {
 
   .formCard {
     background-color: white;
-    border-radius: 8px;
+    border-radius: $border-radius-md;
     padding: 0px 12px;
     margin: 0;
 
@@ -206,11 +206,11 @@ const isFormCompleted = computed(() => {
         }
         input,
         textarea {
-          background-color: rgba(223, 227, 230, 0.374);
+          background-color: $bgcolor-ofEachFields;
           border: none;
           padding: 10px 18px;
           color: gray;
-          border-radius: 8px;
+          border-radius: $border-radius-md;
         }
         
         .tokenField {
@@ -233,7 +233,7 @@ const isFormCompleted = computed(() => {
           button {
             border: 1px solid rgba(235, 227, 227, 0.874);
             padding: 10px 14px;
-            border-radius: 20px;
+            border-radius: $border-radius-pill;
             font-weight: 600;
             background-color: white;
             color: black;
@@ -253,27 +253,41 @@ const isFormCompleted = computed(() => {
         }
   }
 
-  .notification {
-    position: absolute;
-    top:20px;
-    right:16px;
-    min-width: 320px;
-    padding: 12px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+.notification{
+  position:absolute;
+  min-width: 320px;
+  right:8px;
+  top: 4px;
+  border-radius: $border-radius-lg;
+  padding: 12px 16px;
+  box-shadow: $box-shadow-notiBox;
+
+  .closeBtn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    margin-left:12px;
+
+    border: none;
+    background:none;
+    
+
+    img{
+      width:14px;
+      height:14px;
+    }
   }
-  .customDropdown{
-  width:250px;
 }
+  .customDropdown{
+    width:250px;
+  }
 
 .filterBtn{
   width:100%;
-  background-color:rgba(223, 227, 230, 0.374);
+  background-color: $bgcolor-ofEachFields;
   border:none;
-  border-radius:8px;
+  border-radius: $border-radius-md;
   padding:10px 18px;
   color:gray;
 
@@ -298,16 +312,16 @@ const isFormCompleted = computed(() => {
 .customMenu{
   width:100%;
   border:none;
-  border-radius:12px;
+  border-radius: $border-radius-lg;
   padding:8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  box-shadow: $box-shadow-md;
 
   .dropdown-item{
     width:100%;
     border:none;
     background:none;
     text-align:left;
-    border-radius:8px;
+    border-radius: $border-radius-lg;
     padding:10px 14px;
     cursor:pointer;
 

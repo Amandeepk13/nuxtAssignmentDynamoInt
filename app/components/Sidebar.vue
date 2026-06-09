@@ -76,7 +76,7 @@
         width: 38px;
         height: 44px;
         border: none;
-        border-radius: 14px;
+        border-radius: $border-radius-lg;
         background: rgb(171, 171, 173);
         cursor: pointer;
         display: flex;
@@ -108,7 +108,7 @@
         border:none;
         padding:12px 8px;
         cursor:pointer;
-        border-radius:8px;
+        border-radius: $border-radius-md;
         font-size: 14px;
         font-weight: 600;
         background-color: rgba(194, 200, 205, 0.854);
@@ -135,17 +135,7 @@
       }
      }
     }
-    .content{
-      flex:1;
-      margin:2px;
-      box-sizing: border-box; 
-      box-shadow: -2px 0 2px rgba(121, 121, 123, 0.345);
-      background-color: $bgcolor-primary;
-      border-radius:8px;
-      padding: 10px 28px;
-      min-height: 100vh;
-      position: relative;
-    }
+    
 
   
   // responsiveness to the page - sidebar wrt outer card 

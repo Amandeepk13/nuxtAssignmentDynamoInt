@@ -3,9 +3,13 @@ export default defineNuxtRouteMiddleware(async(to)=> {
  
   const {user} =  useUserSession()
 
-  if (to.path === '/login') return
+  //if a logged in user tries to hit login page
+  if (to.path === '/login' && user.value){
+    return navigateTo('/dashboard')
+  }
 
-  if(!user.value){
+  //if not logged in
+  if (to.path !== '/login' && !user.value){
     return navigateTo('/login')
   }
 
@@ -15,4 +19,6 @@ export default defineNuxtRouteMiddleware(async(to)=> {
 
   
 })
+
+
 

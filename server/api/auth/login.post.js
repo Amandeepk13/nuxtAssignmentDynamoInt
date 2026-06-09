@@ -12,7 +12,7 @@ export default defineEventHandler( async (event) => {
     })
    }
 
-   const isAdmin = await dbOperations.findAdmin( email );
+   const isAdmin = await dbOperations.listAdminUsers( email );
    const role = isAdmin ? 'admin' : 'user';
 
    await setUserSession(event, {
@@ -21,5 +21,9 @@ export default defineEventHandler( async (event) => {
     }
    })
   
-  return { role }; 
+  return { 
+    success : true,
+    message: "User is successfully logged in",
+    role 
+  }; 
 })

@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
 try { 
 
   // accessing the user
-  const user = event.context.user?.name;
+  const user = event.context?.user?.name;
 
   if (!user) {
     throw createError({
@@ -27,7 +27,7 @@ try {
       });
   }
 
-  const app = await dbOperations.findByName(applicationName);
+  const app = await dbOperations.getApplicationByName(applicationName);
 
   if (!app) {
     throw createError({
@@ -48,7 +48,7 @@ try {
       
      try{
 
-      await dbOperations.saveApp(app,user);
+      await dbOperations.updateApplicationData(app,user);
 
       return {
         success: true,
@@ -57,11 +57,11 @@ try {
       };
 
     } catch(err){ 
-
-        if (err.name === "ConditionalCheckFailedException") {
+        // race condition if somehow at the same msec someone else acquired the token and the user has no access to release it ...
+        if (err.name === "ConditionalCheckFailedException") { 
             throw createError({
               statusCode: 400,
-              statusMessage: `'${applicationName}' can only be released by its owner`
+              statusMessage: `'${applicationName}' is acquired by someone else`
             });
         }
 
@@ -87,7 +87,7 @@ try {
 
   try {
 
-  await dbOperations.saveApp(app, user);
+  await dbOperations.updateApplicationData(app, user);
 
   return {
     success: true,
@@ -99,7 +99,7 @@ try {
 
     if(err.name === "ConditionalCheckFailedException"){
       
-      const currentApp = await dbOperations.findByName(applicationName);
+      const currentApp = await dbOperations.getApplicationByName(applicationName);
 
       throw createError({
           statusCode: 400,

@@ -6,7 +6,7 @@ const applicationTable = process.env.MERGE_TOKEN_REPOSITORY_TABLE;
 
 export const dbOperations = {
 
-  async getApp() {
+  async getAllApplications() {
 
     try {
 
@@ -29,7 +29,7 @@ export const dbOperations = {
 
   },
 
-  async findByName(name) {
+  async getApplicationByName(name) {
 
     const data = await dynamoDB.send(
       new GetCommand({
@@ -44,7 +44,7 @@ export const dbOperations = {
     return data.Item;
   },
 
-  async createApp(appData) {
+  async createApplication(appData) {
 
     try{
       await dynamoDB.send(
@@ -63,7 +63,7 @@ export const dbOperations = {
     }
   },
 
-  async saveApp(application, requestingUser) {
+  async updateApplicationData(application, requestingUser) {
 
     try{
 
@@ -85,7 +85,7 @@ export const dbOperations = {
       if( application.merged){
         // taking the token 
         updateParams.ConditionExpression = "merged = :false"; 
-        //it check if someone other also try to clock - race condition
+        //it check if someone other also try to lock - race condition
         
         updateParams.ExpressionAttributeValues = {
           ":merged" : application.merged,
@@ -119,7 +119,7 @@ export const dbOperations = {
     }
   },
 
-  async findAdmin(email) {
+  async listAdminUsers(email) {
 
     try {
       const data = await dynamoDB.send(

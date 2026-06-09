@@ -8,7 +8,7 @@ export default defineEventHandler(async(event)=>{
  try{
 
   //Admin authorization
-  if (!event.context.user || event.context.user.role !== "admin") {
+  if (event.context?.user?.role !== "admin") {
     throw createError({
       statusCode: 403,
       statusMessage: "Access Denied. Only Admins are authorized"
@@ -21,7 +21,7 @@ export default defineEventHandler(async(event)=>{
 
 
   // if reposiotry is present with same name
-  const exists = await dbOperations.findByName(data.name.toLowerCase());
+  const exists = await dbOperations.getApplicationByName(data.name.toLowerCase());
 
   if (exists) {
 
@@ -41,7 +41,7 @@ export default defineEventHandler(async(event)=>{
     mergedAt: null
   };
 
-  await dbOperations.createApp(application);
+  await dbOperations.createApplication(application);
 
 
   return { 

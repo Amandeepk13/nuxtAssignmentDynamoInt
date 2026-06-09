@@ -3,7 +3,11 @@
 const store = useApplicationsStore()
 const {user} = useUserSession()
 
-defineProps(["appsList"])
+const props = defineProps({
+  appsList:{
+    type: Array,
+  }
+})
 
 const { showMsg, message, isError, showSuccess, showError, closeNotification } = useNotification()
 
@@ -41,6 +45,14 @@ const formatDateTime = (date) => {
   }
 }
 
+const formattedApplications = computed(() =>
+  props.appsList.map(app => ({
+    ...app,
+    formattedDateTime: formatDateTime(app.mergedAt)
+  }))
+)
+
+
 </script>
 
 
@@ -62,7 +74,7 @@ const formatDateTime = (date) => {
     </thead>
 
     <tbody class="tableBody">
-       <tr v-for="application in appsList" :key="application.name">
+       <tr v-for="application in formattedApplications" :key="application.name">
         <td>{{ application.name }}</td>
         <td>
             <span class="typeBadge" :class="application.type.toLowerCase()">{{ application.type}}</span>
@@ -74,14 +86,14 @@ const formatDateTime = (date) => {
         <td> {{ application.mergedBy || '-'}}</td>
 
         <td> 
-          <div v-if="application.mergedAt" class="dateTimeBox">
+          <div v-if="application.formattedDateTime" class="dateTimeBox">
     
             <span class="dateText">
-              {{ formatDateTime(application.mergedAt).date }}
+              {{ application.formattedDateTime.date }}
             </span>
 
             <span class="timeText">
-              {{ formatDateTime(application.mergedAt).time }}
+              {{ application.formattedDateTime.time }}
             </span>
 
           </div>
@@ -99,7 +111,7 @@ const formatDateTime = (date) => {
         <td>
           <div class="repoLinkColumn">
 
-          <a :href="application.repositoryLink" target="_blank" rel="noopenor noreferrer" aria-label="Open repository">
+          <a :href="application.repositoryLink" target="_blank" rel="noopener noreferrer" aria-label="Open repository">
             <img src="../assets/img/redirectLinkIcon.svg" class="repoLinkIcon" aria-hidden="true"/>
 
           </a>
@@ -110,13 +122,13 @@ const formatDateTime = (date) => {
        </tr>
     </tbody>
   </table>
-  <p v-if="appsList.length === 0">No such repository is there !!!</p>
+  <p v-if="formattedApplications.length === 0">No such repository is there !!!</p>
   </div>
    <div v-if="showMsg" class="alert notification d-flex justify-content-between align-items-center"
   :class="isError ? 'alert-danger' : 'alert-success'">
      <span>{{ message }}</span>
-     <span class="closeBtn" @click="closeNotification"><img src="../assets/img/crossIcon.svg" aria-hidden="true" />
-     </span>
+     <button type="button" class="closeBtn" @click="closeNotification" aria-label="Close Notification"><img src="../assets/img/crossIcon.svg" aria-hidden="true" />
+     </button>
    </div>
 
 </template>
@@ -126,10 +138,10 @@ const formatDateTime = (date) => {
  
  .tableContainer{
   width:100%;
-  border-radius: 12px;
+  border-radius: $border-radius-lg;
   overflow-x: auto;
   overflow-y: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: $box-shadow-primary;
   margin: 20px auto;
   
 }
@@ -180,7 +192,7 @@ td{
   border: none;
   padding: 6px 12px;
   cursor: pointer;
-  border-radius: 14px;
+  border-radius: $border-radius-lg;
   width: 64px;
   font-size:13px;
   display: flex;
@@ -198,7 +210,7 @@ td{
   background-color: black;
 }
 .mergedBtn{
-  background-color: #b6b6b6;
+  background-color: $bgcolor-unavailableBadges;
 }
 
 p{
@@ -222,9 +234,9 @@ p{
   min-width: 320px;
   right:8px;
   top: 4px;
-  border-radius: 12px;
+  border-radius: $border-radius-lg;
   padding: 12px 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: $box-shadow-notiBox;
 
   .closeBtn{
     display:flex;
@@ -232,6 +244,10 @@ p{
     justify-content:center;
     cursor:pointer;
     margin-left:12px;
+
+    border: none;
+    background:none;
+    
 
     img{
       width:14px;
@@ -245,26 +261,26 @@ p{
 
 .typeBadge {
   padding: 4px 8px;
-  border-radius: 12px;
+  border-radius: $border-radius-lg;
   font-size:12px;
   
   &.applications {
-    background-color: rgba(185, 216, 247, 0.689);
-    color:rgb(4, 31, 117);
+    background-color: $bgcolor-appBadge;
+    color: $textcolor-appBadge;
   }
   &.stacks {
-    background-color: rgba(247, 189, 247, 0.728);
-    color:rgb(171, 4, 171);
+    background-color: $bgcolor-stackBadge;
+    color: $textcolor-stackBadge;
   }
   &.library {
-    background-color: rgba(196, 247, 196, 0.735);
-    color:rgb(4, 58, 12);
+    background-color: $bgcolor-libBadge;
+    color:$textcolor-libBadge;
   }
 }
 
 .statusBadge {
   padding: 4px 8px;
-  border-radius: 12px;
+  border-radius: $border-radius-lg;
   font-size:12px;
 
   &.available {
@@ -272,7 +288,7 @@ p{
     color:white;
   }
   &.not-available {
-    background-color: #b6b6b6;
+    background-color: $bgcolor-unavailableBadges;
     color:white;
   }
 }
