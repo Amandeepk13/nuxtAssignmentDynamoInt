@@ -1,4 +1,5 @@
 <script setup>
+
   definePageMeta({
     layout:false 
   })
@@ -6,7 +7,7 @@
 
 <template>
   <div class="loginPage">
-    <LoginForm/>
+    <LoginComponent/>
   </div>
 </template>
 
