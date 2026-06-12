@@ -1,11 +1,24 @@
+/**
+ * POST /api/merge
+ * 
+ * Repository Token Management
+ * - acquire/release tokens, handle concurrent 
+ *   and race condition
+ */
+
+/**
+ * imports
+ */
 import { dbOperations } from "../utils/dbOperations";
 
 export default defineEventHandler(async (event) => {
 
 try { 
 
-  // accessing the user
-  const user = event.context?.user?.name;
+  /**
+   * Authentication
+   */
+  const user = event.context?.user?.name; // accessing the user
 
   if (!user) {
     throw createError({
@@ -14,7 +27,7 @@ try {
     });
   }
 
-  const body = await readBody(event);
+  const body = await readBody(event); 
 
   let { applicationName } = body;
 
@@ -27,6 +40,9 @@ try {
       });
   }
 
+  /**
+   * Repository Lookup
+   */
   const app = await dbOperations.getApplicationByName(applicationName);
 
   if (!app) {
@@ -36,7 +52,9 @@ try {
     });
   }
 
-  //releasing token 
+  /**
+   * Release Token Flow
+   */ 
   if (app.merged) {
 
     if (app.mergedBy === user) { // if same user
@@ -79,7 +97,9 @@ try {
   }
 
 
-  //take token
+  /**
+   * Acquire Token Flow
+   */
   app.merged = true;
   app.mergedBy = user;
   app.status = "Not Available";

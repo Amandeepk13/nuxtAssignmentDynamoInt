@@ -1,3 +1,10 @@
+/**
+ * POST /api/auth/logout
+ * 
+ * Destroys active user session
+ * 
+ */
+
 export default defineEventHandler(async(event) => {
   try {
     await clearUserSession(event)

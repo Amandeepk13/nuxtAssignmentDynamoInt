@@ -1,3 +1,10 @@
+/**
+ * 
+ * useAuth Composable
+ * 
+ * handles authentication action
+ */
+
 export const useAuth = () => {
 
   const { fetch: refreshSession } = useUserSession()

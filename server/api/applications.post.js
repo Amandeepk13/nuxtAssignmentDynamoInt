@@ -1,3 +1,13 @@
+/**
+ * POST /api/applications
+ * 
+ * creates a new repository
+ * access by admin only
+ */
+
+/**
+ * imports
+ */
 import { dbOperations } from "../utils/dbOperations";
 import { repositorySchema } from "../utils/schemas/repositorySchema"
 import { validateBody } from "../utils/validateBody";
@@ -7,7 +17,9 @@ export default defineEventHandler(async(event)=>{
 
  try{
 
-  //Admin authorization
+  /**
+   * Admin authorization
+   */
   if (event.context?.user?.role !== "admin") {
     throw createError({
       statusCode: 403,
@@ -15,12 +27,16 @@ export default defineEventHandler(async(event)=>{
     });
   }
 
-  //parsing the request body from client and validating
+  /**
+   * Request Validation
+   */
   const body = await readBody(event)
   const data = validateBody(repositorySchema,body);
 
 
-  // if reposiotry is present with same name
+  /**
+   * Duplicate Repository Check
+   */
   const exists = await dbOperations.getApplicationByName(data.name.toLowerCase());
 
   if (exists) {

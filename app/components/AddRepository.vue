@@ -8,7 +8,7 @@
 
 
  /**
-  * Composables
+  * Composables / store
   */
 const { showMsg, message, isError, showSuccess, showError, closeNotification } = useNotification()
 

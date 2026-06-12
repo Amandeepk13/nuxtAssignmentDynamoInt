@@ -1,16 +1,38 @@
 <script setup>
+/**
+ * Header Component
+ * 
+ * 
+ * Top navigation bar 
+ * display logo, title and current user
+ * logout action
+ */
+
+ /**
+  * assets
+  */
 import mergeIcon from '~/assets/img/git-mergeIcon.svg'
 import pushIcon from '~/assets/img/git-pushIcon.svg'
 
+ /**
+  * composables
+  */
  const { user, clear } = useUserSession()
+ const loader = useGlobalLoader()
+ const route = useRoute()
  
+/**
+* computed properties
+*/
+const isAdmin = computed( () => route.path === '/addrepository')
 
- const handleLogout = async() => {
-  const loader = useGlobalLoader()
-
-  loader.value = true   
+/**
+ * logout actions
+ */
+ const handleLogout = async() => {   
 
   try {
+    loader.value = true
     await $fetch('/api/auth/logout', { 
       method: 'POST' 
     })
@@ -23,9 +45,8 @@ import pushIcon from '~/assets/img/git-pushIcon.svg'
 
 }
 
-  const route = useRoute()
-  const isAdmin = computed( () => route.path === '/addrepository')
-
+  
+  
   
 </script>
 

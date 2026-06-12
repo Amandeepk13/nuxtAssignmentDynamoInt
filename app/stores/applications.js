@@ -1,7 +1,20 @@
+/**
+ * Application Store
+ * 
+ * Centralized store management
+ * - fetch, create, manage repositories
+ */
+
+/**
+ * imports
+ */
 import { defineStore } from "pinia";
 
-// applications store
+
 export const useApplicationsStore = defineStore("applications", {
+  /**
+   * State
+   */
   state: () => ({
     applicationsList: [],
     search: "",
@@ -9,7 +22,9 @@ export const useApplicationsStore = defineStore("applications", {
     selectedStatus: "All Status"
   }),
 
-  // computed properties
+  /**
+   * Computed
+   */
   getters: {
     filteredApplications(state) {
       return state.applicationsList.filter(app => {
@@ -22,9 +37,14 @@ export const useApplicationsStore = defineStore("applications", {
     }
   },
 
-  
+  /**
+   * actions
+   */
   actions: {
 
+    /**
+     * Fetches all repositories
+     */
     async fetchApplications() {
       try{
         const data = await $fetch('/api/applications');
@@ -38,6 +58,9 @@ export const useApplicationsStore = defineStore("applications", {
       }
     },
 
+    /**
+     * acquires or releases token
+     */
     async mergeApplication(applicationName){
 
       try{
@@ -52,6 +75,9 @@ export const useApplicationsStore = defineStore("applications", {
       }
     },
 
+    /**
+     * Creates new repository.
+     */
     async createApplication(data){
       try{
         return await $fetch('/api/applications', {

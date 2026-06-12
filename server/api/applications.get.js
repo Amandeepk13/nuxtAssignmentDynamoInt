@@ -1,4 +1,14 @@
+/**
+ * GET /api/applications
+ * 
+ * retrieves all repositories from storage
+ */
+
+/**
+ * imports
+ */
 import { dbOperations } from "../utils/dbOperations"
+
 
 export default defineEventHandler(async(event) => {
 

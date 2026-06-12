@@ -1,10 +1,25 @@
 <script setup>
+/**
+ * Login Component
+ * 
+ * 
+ * Handles Google OAuth authentication
+ * 
+ */
 
+/**
+ * Composables
+ */
 const {login} = useAuth()
 const loader = useGlobalLoader()
 
+
+/**
+ * Authentication Handlers
+ */
+
+// Handles successful authentication
 const onSuccess = async(e) => {
-  // console.log("user claims", e.claims)
   try{
     loader.value = true;
 
@@ -16,6 +31,7 @@ const onSuccess = async(e) => {
   
 };
 
+// Handles failed authentication
 const onError = (err) => {
   console.error(err);
 };

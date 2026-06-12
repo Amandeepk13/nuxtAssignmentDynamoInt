@@ -3,41 +3,34 @@
  * ApplicationTableList Component
  * 
  * 
- * Table list of all the repositories
+ * Displays repository information in tabular format.
  * user can view, take(lock) or release token
  */
 
-
 /**
- * composables
+ * Props
  */
-const store = useApplicationsStore()
-const {user} = useUserSession()
-const { showMsg, message, isError, showSuccess, showError, closeNotification } = useNotification()
-
-
 const props = defineProps({
+  // list of repositories
   appsList:{
     type: Array,
   }
 })
 
 
+/**
+ * composables / stores
+ */
+const store = useApplicationsStore()
+const {user} = useUserSession()
+const { showMsg, message, isError, showSuccess, showError, closeNotification } = useNotification()
 
-const handleMerge = async (applicationName) =>{
-  try{
-    const response = await store.mergeApplication(applicationName);
 
-    showSuccess(response.message)
+/**
+ * Utility Methods
+ */
 
-  } catch(err){
-
-    showError(err?.data?.statusMessage)
-    
-  }
-
-}
-
+// formats timestamp
 const formatDateTime = (date) => {
   if (!date) return null
 
@@ -58,12 +51,33 @@ const formatDateTime = (date) => {
   }
 }
 
+/**
+ * Computed Properties
+ */
 const formattedApplications = computed(() =>
   props.appsList.map(app => ({
     ...app,
     formattedDateTime: formatDateTime(app.mergedAt)
   }))
 )
+
+/**
+ * Business Logic
+ */
+// handles merging request
+const handleMerge = async (applicationName) =>{
+  try{
+    const response = await store.mergeApplication(applicationName);
+
+    showSuccess(response.message)
+
+  } catch(err){
+
+    showError(err?.data?.statusMessage)
+    
+  }
+
+}
 
 
 </script>

@@ -1,16 +1,37 @@
+/**
+ * Database Operations Layer
+ * 
+ * Centralized data access Layer
+ * 
+ */
+
+/**
+ * imports
+ */
 import { dynamoDB } from "./dbconnection";
 import { QueryCommand ,GetCommand, PutCommand, UpdateCommand} from "@aws-sdk/lib-dynamodb";
 
-
+/**
+ * DynamoDB Repository Table
+ */
 const applicationTable = process.env.MERGE_TOKEN_REPOSITORY_TABLE;
 
+/**
+ * Database Operations
+ */
 export const dbOperations = {
 
+  /**
+   * Fetch all repositories
+   */
   async getAllApplications() {
 
     try {
 
       const data = await dynamoDB.send( 
+        /**
+         * Query all items
+         */
         new QueryCommand({
           TableName: applicationTable,
 
@@ -29,9 +50,15 @@ export const dbOperations = {
 
   },
 
+  /**
+   * Retrieve repository by name
+   */
   async getApplicationByName(name) {
 
     const data = await dynamoDB.send(
+      /**
+       * Get repository based on key
+       */
       new GetCommand({
         TableName: applicationTable,
         Key: {
@@ -44,6 +71,9 @@ export const dbOperations = {
     return data.Item;
   },
 
+  /**
+   * Creates a repository item 
+   */
   async createApplication(appData) {
 
     try{
@@ -63,10 +93,17 @@ export const dbOperations = {
     }
   },
 
+  /**
+   * Update Repository State
+   */
   async updateApplicationData(application, requestingUser) {
 
     try{
 
+      /**
+       * Base Update Expression 
+       * - shared by both lock/unlock operations
+       */
       const updateParams = {
         TableName: applicationTable,
         Key : {
@@ -82,11 +119,20 @@ export const dbOperations = {
         ReturnValues : "ALL_NEW"
       }
 
+      /**
+       * Token Acquisition Flow
+       * 
+       * - only succeeds if repository 
+       *   is currently unlocked
+       * - prevent race conditions where 
+       *   multiple users attempt to acquire
+       *   the same token simultaneously
+       * 
+       */
       if( application.merged){
-        // taking the token 
+         
         updateParams.ConditionExpression = "merged = :false"; 
-        //it check if someone other also try to lock - race condition
-        
+      
         updateParams.ExpressionAttributeValues = {
           ":merged" : application.merged,
           ":mergedBy" : application.mergedBy,
@@ -95,9 +141,16 @@ export const dbOperations = {
           ":false" : false // nobody yet taken
         }
       } else {
-        // releasing the token
-
-        // if same user - only then release can happen
+        /**
+         * Token Release Flow
+         * 
+         * - Only the user who currently owns
+         *   the token can release it
+         * - Prevents accidental release by 
+         *   other users.
+         * 
+         */
+        
         updateParams.ConditionExpression = "mergedBy = :currentUser";
         updateParams.ExpressionAttributeValues = {
           ":merged": application.merged,
@@ -119,6 +172,9 @@ export const dbOperations = {
     }
   },
 
+  /**
+   * Check Admin User
+   */
   async listAdminUsers(email) {
 
     try {
