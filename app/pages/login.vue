@@ -1,7 +1,19 @@
 <script setup>
+/**
+ * @file pages/login.vue
+ * @description login page for authentication 
+ * 
+ */
 
+ 
+  // Disable default layout.
   definePageMeta({
     layout:false 
+  })
+
+  // Page title binding..
+  useHead({
+    title: 'Login'
   })
 </script>
 

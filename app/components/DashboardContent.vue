@@ -1,14 +1,28 @@
 <script setup>
+/**
+ * Dashboard Component
+ * 
+ * 
+ * Encapsulates the Repositories List and access fields 
+ */
+
+/**
+ * Composables
+ */
 const store = useApplicationsStore();
 const loader = useGlobalLoader();
 
+// local state
 let interval = null;
 
+/**
+ * Lifecycle Hooks
+ */
 onMounted(async () => {
   loader.value = true;
   
   try {
-    await store.fetchApplications();
+    await store.fetchApplications(); // fetches repositories
   } finally {
     loader.value = false;
   }
@@ -49,7 +63,7 @@ onUnmounted(async () => {
       </div>
       </div>
 
-      <div class="col-12 col-md-6 col-lg-auto">
+      <div class="col-12 col-sm-6 col-lg-auto">
       <div class="dropdown customDropdown">
         <button class="btn dropdown-toggle filterBtn" type="button" data-bs-toggle="dropdown">
           {{ store.selectedType }}
@@ -86,7 +100,7 @@ onUnmounted(async () => {
       </div>
 
 
-      <div class="col-12 col-md-6 col-lg-auto">
+      <div class="col-12 col-sm-6 col-lg-auto">
       <div class="dropdown customDropdown">
         <button class="btn dropdown-toggle filterBtn" type="button" data-bs-toggle="dropdown">
           {{ store.selectedStatus }}
@@ -126,35 +140,30 @@ onUnmounted(async () => {
 <style lang="scss" scoped>
 .mainContent {
   width: 100%;
-  max-width: 1200px;
   position: relative;
-}
 
+}
 .dashboardHead {
   text-align: left;
   margin-bottom: 40px;
 
   h1 {
-    font-size: 28px;
+    font-size: $font-heading;
   }
   p {
+    font-size: $font-forDesc;
     color: gray;
   }
 }
 
 .filterBars {
-  display: flex;
-  gap: 15px;
   margin-bottom: 25px;
-  align-items: center;
-
   width: 100%;
 }
 
 .searchBar {
-  flex: 1;
-  max-width: 900px;
-  min-width: 300px;
+  width:100%;
+  min-width: 0;
   position: relative;
 
   .searchIcon {
@@ -180,7 +189,7 @@ onUnmounted(async () => {
 
 
 .customDropdown {
-  width: 170px;
+  min-width: 170px;
 }
 
 .filterBtn {
@@ -218,10 +227,32 @@ onUnmounted(async () => {
     border-radius: $border-radius-lg;
     padding: 10px 14px;
     cursor: pointer;
+    color: black !important;
 
     &:hover {
-      background-color: rgba(223, 227, 230, 0.5);
+      background-color: $bgcolor-ofEachFields;
     }
+    &:focus, &:active {
+      color: black !important;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+
+  .customDropdown {
+    width: 100%;
+  }
+
+}
+@media (max-width: 576px) {
+
+  .customDropdown {
+    width: 100%;
+  }
+
+  .filterBtn {
+    padding: 10px 12px;
   }
 }
 </style>

@@ -110,13 +110,19 @@
       box-shadow: $box-shadow-md;
     
       .LogoutBtn{
-        background-color: rgba(223, 227, 230, 0.589);
+        background-color: $bgcolor-ofEachFields;
         padding:8px;
         border-radius: $border-radius-md;
         display:flex;
         align-items: center;
         justify-content: center;
         gap:6px;
+        color: black !important;
+
+        &:active,&:focus{
+          color:black !important;
+          background-color: rgba(223, 227, 230, 0.5);
+        }
 
         .logoutIcon{
           color:black;

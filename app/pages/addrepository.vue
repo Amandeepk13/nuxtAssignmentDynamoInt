@@ -1,5 +1,14 @@
 <script setup>
+/**
+ * @file pages/addrepository.vue
+ * @description Administrative interface 
+ * provide access to create new repositories
+ */
 
+// dynamic title binding
+useHead({
+  title: 'Add Repository' 
+})
  
   
 </script>
@@ -10,6 +19,7 @@
       <h1 tabindex="0">Admin Panel</h1>
       <p tabindex="0">Manage repositories from a single admin workspace</p>
 
+      <!-- Repository Form -->
       <AddRepository />
   </div>
 
@@ -29,11 +39,11 @@
       
 
       h1{
-        font-size:32px;
+        font-size: $font-heading;
         margin-bottom:2px;
       }
       p{
-        font-size:14px;
+        font-size: $font-forDesc;
         color:gray;
         
       }

@@ -1,5 +1,8 @@
 /* font-family */
 $font-primary: Arial, Helvetica, sans-serif;
+$font-heading: 32px;
+$font-forDesc: 14px;
+$font-forCaption:12px;
 
 /* Colors */
 $color-primary-blue: rgb(17, 101, 245);
@@ -14,6 +17,7 @@ $bgcolor-stackBadge : rgba(247, 189, 247, 0.728);
 $textcolor-stackBadge : rgb(171, 4, 171);
 $bgcolor-libBadge: rgba(196, 247, 196, 0.735);
 $textcolor-libBadge: rgb(4, 58, 12);
+
 
 /* Box Shadows */
 $box-shadow-primary: 0 4px 12px rgba(0,0,0,0.2); 

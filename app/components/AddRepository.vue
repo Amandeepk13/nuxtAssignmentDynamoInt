@@ -1,16 +1,55 @@
 <script setup>
+/**
+ * AddRepository Component
+ * 
+ * 
+ * Provide Form to admins for creating new repositories
+ */
 
+
+ /**
+  * Composables
+  */
 const { showMsg, message, isError, showSuccess, showError, closeNotification } = useNotification()
 
+const appStore = useApplicationsStore();
+
+/**
+ * Reactive states
+ */
 const repoName = ref("");
 const repoType = ref("");
 const repoDesc = ref("");
 const repoLink = ref("");
+const isCreating = ref(false); //tracks repository creation request
 
-const isCreating = ref(false);
 
-const appStore = useApplicationsStore();
+/**
+ * Computed Properties
+ */
+// determines whether all fields are completed
+const isFormCompleted = computed(() => {
+  return repoName.value && repoType.value && repoDesc.value && repoLink.value;
+});
+// determines whether any field has input
+const isInputPresent = computed(() => {
+  return repoName.value || repoType.value || repoDesc.value || repoLink.value;
+});
 
+
+/**
+ * Utility Functions
+ */
+
+ // clear all form fields
+ const resetFields = () => {
+  repoName.value = "";
+  repoType.value = "";
+  repoDesc.value = "";
+  repoLink.value = "";
+};
+
+// create new repository
 const createRepo = async () => {
   try {
     isCreating.value = true;
@@ -39,16 +78,8 @@ const createRepo = async () => {
     showMsg.value = false;
   }, 5000);
 };
-const resetFields = () => {
-  repoName.value = "";
-  repoType.value = "";
-  repoDesc.value = "";
-  repoLink.value = "";
-};
 
-const isFormCompleted = computed(() => {
-  return repoName.value && repoType.value && repoDesc.value && repoLink.value;
-});
+
 </script>
 
 <template>
@@ -78,6 +109,7 @@ const isFormCompleted = computed(() => {
               class="btn dropdown-toggle filterBtn"
               type="button"
               data-bs-toggle="dropdown"
+              :style="{ color: repoType ? 'black' : 'gray'}"
             >
               {{ repoType || "Select the type" }}
 
@@ -90,7 +122,8 @@ const isFormCompleted = computed(() => {
 
             <ul class="dropdown-menu customMenu">
               <li>
-                <button type="button" class="dropdown-item" @click="repoType = 'Applications'" >
+                <button type="button" class="dropdown-item" @click="repoType = 'Applications'" 
+                >
                   Applications
                 </button>
               </li>
@@ -137,13 +170,14 @@ const isFormCompleted = computed(() => {
           <div class="col-12 col-md-6">
             <div class="formgroup">
               <label>Initial Token Status</label><br />
-              <input type="text" value="Available" disabled />
+              <input type="text" placeholder="Available" disabled />
             </div>
           </div>
            
           <div class="col-12 col-md-6 d-flex">
             <div class="formActions d-flex flex-column flex-sm-row">
-              <button type="button" class="cancelBtn " @click="resetFields">
+              <button type="button" class="cancelBtn " @click="resetFields"
+              :disabled="!isInputPresent">
               Cancel
               </button>
               <button type="submit" class="createBtn " :disabled="!isFormCompleted || isCreating" >
@@ -175,7 +209,7 @@ const isFormCompleted = computed(() => {
   border-radius: $border-radius-md;
   width: 100%;
   padding: 12px 28px 28px;
-  margin: 8px;
+  margin: 0px;
   
 
   h2 {
@@ -183,7 +217,7 @@ const isFormCompleted = computed(() => {
     margin-bottom: 2px;
   }
   p {
-    font-size: 14px;
+    font-size: $font-forDesc;
     color: gray;
   }
 
@@ -201,16 +235,17 @@ const isFormCompleted = computed(() => {
         padding: 8px;
 
         label {
-          
+          font-size: $font-forDesc;
           margin-bottom: -6px;
         }
         input,
         textarea {
+          font-size: $font-forDesc;
           background-color: $bgcolor-ofEachFields;
           border: none;
           padding: 10px 18px;
-          color: gray;
           border-radius: $border-radius-md;
+          color:black;
         }
         
         .tokenField {
@@ -280,7 +315,7 @@ const isFormCompleted = computed(() => {
   }
 }
   .customDropdown{
-    width:250px;
+    max-width:250px;
   }
 
 .filterBtn{
@@ -289,18 +324,19 @@ const isFormCompleted = computed(() => {
   border:none;
   border-radius: $border-radius-md;
   padding:10px 18px;
-  color:gray;
+  color: gray;
+  font-size: $font-forDesc;
 
   display:flex;
   align-items:center;
   justify-content:space-between;
-
 
   &::after{
     display:none;
   }
   &:focus{
     outline:2px solid black;
+    color: black;
   }
 }
 
@@ -324,10 +360,15 @@ const isFormCompleted = computed(() => {
     border-radius: $border-radius-lg;
     padding:10px 14px;
     cursor:pointer;
+    color: black !important;
 
     &:hover{
-      background-color: rgba(223, 227, 230, 0.5);
+      background-color: $bgcolor-ofEachFields;
     }
+    &:focus, &:active {
+      color: black !important;
+    }
+
   }
   }
 }

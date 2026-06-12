@@ -1,15 +1,13 @@
 <script setup>
 
-  const { isLoading } = useGlobalLoader()
   const { user } = useUserSession()
-
-  const isSidebarOpen = ref(true)
-
   const route = useRoute()
 
-  const toggleSidebar = () => {
-    isSidebarOpen.value = !isSidebarOpen.value
-  }
+  const props = defineProps({
+    isOpen: {
+      type: Boolean,
+    }
+  })
 
   const goToDashboard = () => {
     navigateTo('/dashboard')
@@ -23,11 +21,8 @@
 
 <template>
 
-  <aside class="sidebar" :class="{ collapsed: !isSidebarOpen }" v-if="user?.role === 'admin'">
+  <aside class="sidebar" :class="{ collapsed: !props.isOpen }" v-if="user?.role === 'admin'">
 
-      <button class="toggleBtn" @click="toggleSidebar" :aria-label="isSidebarOpen ? 'Close sidebar' : 'Open sidebar'" >
-        <img src="../assets/img/menuIcon.svg" aria-hidden="true"/>
-      </button>
 
       <nav class="sidebarContainer">
         <ul>
@@ -50,14 +45,16 @@
 
 <style lang="scss" scoped>
 
-
   .sidebar{
-     width:220px;
+     width:200px;
      min-height: 100vh;
      padding:20px 0px;
      overflow: hidden;
      transition: 0.3s ease;
      position:relative;
+     background-color: white;
+     flex-shrink:0;
+     
 
      &.collapsed{
       width:28px;
@@ -69,27 +66,11 @@
 
      }
 
-     .toggleBtn{
-        position: absolute;
-        top: 20px;
-        right: -10px;
-        width: 38px;
-        height: 44px;
-        border: none;
-        border-radius: $border-radius-lg;
-        background: rgb(171, 171, 173);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        transition: 0.2s ease;
-      }
-
     .sidebarContainer{
       display:flex; 
       flex-direction: column;
       padding:2px 6px;
+      max-width: 180px;
 
       ul{
         padding: 2px;
@@ -101,7 +82,7 @@
       }
     
       .linkBtn{
-        width:150px;
+        width:100%;
         display:flex;
         align-items: center;
         gap:12px;
@@ -135,51 +116,45 @@
       }
      }
     }
-    
 
-  
-  // responsiveness to the page - sidebar wrt outer card 
-  @media (max-width: 768px){
-
-  .adminPage{
-    flex-direction: column;
-  }
+//responsiveness for tablets
+@media (max-width: 992px){
 
   .sidebar{
-    width:100% ;
-    min-height:auto ;
-    padding:12px ;
+    width:160px;
 
-    &.collapsed{
-      width:100% ;
-   }
+    .sidebarContainer{
+      width:150px;
 
-   .linkBtn{
-      width:auto ;
-      min-width:140px;
-      justify-content:center;
+     .linkBtn{
+        font-size:12px;
+        gap:8px;
+        padding:10px 6px;
+      }  
     }
   }
+}
 
+//responsiveness for mobile
+@media (max-width: 576px){
 
-  .sidebarContainer{
-    visibility:visible !important;
+  .sidebar{
+    width:140px;
 
-    ul{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      justify-content:center;
+    .sidebarContainer{
+      width:130px;
+
+      .linkBtn{
+        font-size:12px;
+        padding:8px 4px;
+        gap:4px;
+
+        &::before{
+          width:10px;
+          height:10px;
+        }
+      }
     }
-  }
- 
-  .toggleBtn{
-    display:none !important;
-  }
-
-  .content{
-    padding:16px ;
-    min-height:auto ;
   }
 }
 

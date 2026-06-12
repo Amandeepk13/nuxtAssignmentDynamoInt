@@ -85,7 +85,7 @@ const onError = (err) => {
 }
 
 .title{
-  font-size:32px;
+  font-size: $font-heading;
   
   margin: 10px;
   padding:8px;

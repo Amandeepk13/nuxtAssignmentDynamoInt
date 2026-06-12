@@ -1,7 +1,20 @@
 <script setup>
+/**
+ * ApplicationTableList Component
+ * 
+ * 
+ * Table list of all the repositories
+ * user can view, take(lock) or release token
+ */
 
+
+/**
+ * composables
+ */
 const store = useApplicationsStore()
 const {user} = useUserSession()
+const { showMsg, message, isError, showSuccess, showError, closeNotification } = useNotification()
+
 
 const props = defineProps({
   appsList:{
@@ -9,7 +22,7 @@ const props = defineProps({
   }
 })
 
-const { showMsg, message, isError, showSuccess, showError, closeNotification } = useNotification()
+
 
 const handleMerge = async (applicationName) =>{
   try{
@@ -143,12 +156,11 @@ const formattedApplications = computed(() =>
   overflow-y: hidden;
   box-shadow: $box-shadow-primary;
   margin: 20px auto;
-  
+  background-color: white;
 }
 
 .applicationTable{
   width:100%;
-  min-width: 1000px;
   border-collapse: collapse;
 
 }
@@ -165,6 +177,9 @@ th{
 td{
   padding:12px;
   border-bottom: 1px solid rgb(224, 222, 222);
+  vertical-align: middle;
+  height: 60px;
+  font-size: $font-forDesc;
 }
 /* tbody tr:nth-child(odd){
   background-color: rgb(211, 210, 210);
@@ -174,17 +189,15 @@ td{
 .dateTimeBox{
   display:flex;
   flex-direction:column;
-  gap:1px;
   color:black;
 }
 
 .dateText{
-  font-size:14px;
-  
+  font-size: $font-forDesc; 
 }
 
 .timeText{
-  font-size:12px;
+  font-size: $font-forCaption;
 }
 
 .mergeBtn, .mergedBtn{
@@ -194,7 +207,8 @@ td{
   cursor: pointer;
   border-radius: $border-radius-lg;
   width: 64px;
-  font-size:13px;
+  height:30px;
+  font-size: $font-forDesc;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -262,7 +276,7 @@ p{
 .typeBadge {
   padding: 4px 8px;
   border-radius: $border-radius-lg;
-  font-size:12px;
+  font-size: $font-forCaption;
   
   &.applications {
     background-color: $bgcolor-appBadge;
