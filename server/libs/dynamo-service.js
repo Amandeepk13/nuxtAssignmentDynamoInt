@@ -8,7 +8,7 @@
 /**
  * imports
  */
-import { dynamoDB } from "./dbconnection";
+import { dynamoDB } from "./dynamo-client";
 import { QueryCommand ,GetCommand, PutCommand, UpdateCommand} from "@aws-sdk/lib-dynamodb";
 
 /**

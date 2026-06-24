@@ -1,18 +1,35 @@
 <script setup>
+/**
+ * Sidebar Component
+ * 
+ * 
+ * Administrative navigation menu
+ * Visible only to admin users
+ */
 
-  const { user } = useUserSession()
-  const route = useRoute()
-
-  const props = defineProps({
+ /**
+  * Props
+  */
+ const props = defineProps({
     isOpen: {
       type: Boolean,
     }
   })
 
+  /**
+   * Composables
+   */
+  const { user } = useUserSession()
+  const route = useRoute()
+
+  /**
+   * Navigation Configuration
+   */
+  // Navigate to dashboard
   const goToDashboard = () => {
     navigateTo('/dashboard')
   }
-
+  // Navigate to addrepository
   const goToAddRepository = () => {
    navigateTo('/addrepository')
   }

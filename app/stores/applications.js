@@ -64,7 +64,7 @@ export const useApplicationsStore = defineStore("applications", {
     async mergeApplication(applicationName){
 
       try{
-        return await $fetch("/api/merge", {
+        return await $fetch("/api/applications/merge", {
           method: "POST",
           body: { applicationName}
         });
@@ -90,7 +90,31 @@ export const useApplicationsStore = defineStore("applications", {
        console.error(err);
        throw err;
      } 
+    },
+
+    /**
+     * Refresh a single repository
+     */
+    async fetchSingleApplication(applicationName) {
+      try {
+        const updatedApp = await $fetch(`/api/applications/${encodeURIComponent(applicationName)}`);
+        
+        // update that app in pinia store
+        const index = this.applicationsList.findIndex(
+          app => app.name.toLowerCase() === applicationName.toLowerCase()
+        );
+        
+        if (index !== -1) {
+          this.applicationsList[index] = updatedApp;
+        }
+        
+        return updatedApp;
+      } catch (err) {
+        console.error("Error fetching single application:", err);
+        throw err;
+      }
     }
+
   }
 
 });

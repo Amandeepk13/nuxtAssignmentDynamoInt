@@ -68,6 +68,8 @@ const formattedApplications = computed(() =>
 const handleMerge = async (applicationName) =>{
   try{
     const response = await store.mergeApplication(applicationName);
+ 
+    await store.fetchSingleApplication(applicationName); //fetches latest state
 
     showSuccess(response.message)
 

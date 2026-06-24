@@ -1,4 +1,4 @@
-import { dbOperations } from "../../utils/dbOperations";
+import { dbOperations } from "../../libs/dynamo-service";
 
 /**
  * POST /api/auth/login

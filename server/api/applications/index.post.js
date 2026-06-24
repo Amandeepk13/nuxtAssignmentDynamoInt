@@ -8,10 +8,20 @@
 /**
  * imports
  */
-import { dbOperations } from "../utils/dbOperations";
-import { repositorySchema } from "../utils/schemas/repositorySchema"
-import { validateBody } from "../utils/validateBody";
+import { z, ZodError } from "zod";
+import { dbOperations } from "../../libs/dynamo-service";
 
+/**
+ * repository schema needed for validation
+ */
+const repositorySchema = z.object({
+  name: z.string().trim().min(1, "Repository name is required"),
+  type: z.enum(["Applications", "Stacks", "Library"], {
+    error: "Invalid repository type",
+  }),
+  description: z.string().trim().min(1, "Description is required"),
+  repositoryLink: z.url("Invalid reposiotry URL"),
+});
 
 export default defineEventHandler(async(event)=>{
 
@@ -31,7 +41,23 @@ export default defineEventHandler(async(event)=>{
    * Request Validation
    */
   const body = await readBody(event)
-  const data = validateBody(repositorySchema,body);
+  
+  let data;
+
+  try {
+    data = repositorySchema.parse(body);
+    } catch (err) {
+
+      if (err instanceof ZodError) {
+        throw createError({
+          statusCode: 400,
+          statusMessage: err.issues[0].message
+        });
+      }
+
+      throw err;
+    }
+
 
 
   /**

@@ -9,7 +9,7 @@
 /**
  * imports
  */
-import { dbOperations } from "../utils/dbOperations";
+import { dbOperations } from "../../libs/dynamo-service";
 
 export default defineEventHandler(async (event) => {
 
