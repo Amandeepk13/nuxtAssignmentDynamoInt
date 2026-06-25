@@ -41,7 +41,7 @@
 
     <main class="mainBody">
 
-      <div class="adminPage container-fluid">
+      <div class="adminPage ">
 
         <Sidebar v-if="isAdmin" :isOpen="isSidebarOpen"/>
 
@@ -76,7 +76,7 @@
 
   .adminPage{
     display:flex;
-    margin: 2px;
+    margin: 0;
     flex-direction: row;
     width:100%;
     min-width:0;
@@ -106,7 +106,7 @@
 .sidebarToggle{
   position:absolute;
   top:24px;
-  left:212px;
+  left:196px;
   transform:translateX(-50%);
   width:38px;
   height:38px;
@@ -128,7 +128,7 @@
     }
 
     &.collapsed{
-      left:40px;
+      left:80px;
     }
   }
 
@@ -137,7 +137,7 @@
 @media (max-width:992px){
 
   .sidebarToggle{
-    left:174px;
+    left:158px;
   }
 
   .content{
@@ -149,12 +149,12 @@
 @media (max-width:576px){
 
   .sidebarToggle{
-    left:152px;
+    left:142px;
     width:34px;
     height:34px;
 
     &.collapsed{
-      left:74px;
+      left:62px;
     }
 
     img{

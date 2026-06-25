@@ -130,7 +130,7 @@ const handleMerge = async (applicationName) =>{
           <span v-else>-</span>
         </td>
 
-        <td><button @click="handleMerge(application.name,application)" :disabled="application.merged && application.mergedBy !== user.name"  :class="application.merged ? 'mergedBtn' : 'mergeBtn'" role="button" :aria-label= "application.merged ? 'Token is taken' : 'Click to take token'" >
+        <td><button @click="handleMerge(application.name,application)" :disabled="application.merged && application.mergedByEmail !== user.email"  :class="application.merged ? 'mergedBtn' : 'mergeBtn'" role="button" :aria-label= "application.merged ? 'Token is taken' : 'Click to take token'" >
           <div class="btnContent">
             <img src="../assets/img/lock.svg" aria-hidden = "true"/>
             <span>{{ application.merged ? 'Taken' : 'Take' }}</span>
@@ -266,6 +266,7 @@ p{
   top: 4px;
   border-radius: $border-radius-lg;
   padding: 12px 16px;
+  z-index: 1001;
   box-shadow: $box-shadow-notiBox;
 
   .closeBtn{

@@ -18,9 +18,10 @@ try {
   /**
    * Authentication
    */
-  const user = event.context?.user?.name; // accessing the user
+  const userName = event.context?.user?.name; 
+  const userEmail = event.context?.user?.email;
 
-  if (!user) {
+  if (!userEmail) {
     throw createError({
       statusCode: 401,
       statusMessage: "Access Denied. Authenticate first",
@@ -57,16 +58,17 @@ try {
    */ 
   if (app.merged) {
 
-    if (app.mergedBy === user) { // if same user
+    if (app.mergedByEmail === userEmail) { // if same user
       app.merged = false;
       app.mergedBy = null;
+      app.mergedByEmail = null;
       app.mergedAt = null;
       app.status = "Available";
 
       
      try{
 
-      await dbOperations.updateApplicationData(app,user);
+      await dbOperations.updateApplicationData(app,userEmail);
 
       return {
         success: true,
@@ -101,13 +103,14 @@ try {
    * Acquire Token Flow
    */
   app.merged = true;
-  app.mergedBy = user;
+  app.mergedBy = userName;
+  app.mergedByEmail = userEmail;
   app.status = "Not Available";
   app.mergedAt = new Date().toISOString();
 
   try {
 
-  await dbOperations.updateApplicationData(app, user);
+  await dbOperations.updateApplicationData(app, userEmail);
 
   return {
     success: true,

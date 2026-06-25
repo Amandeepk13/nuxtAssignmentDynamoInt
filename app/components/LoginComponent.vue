@@ -70,7 +70,6 @@ const onError = (err) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 10%;
   width: 100%;
   max-width: 450px;
   text-align: center;
@@ -111,6 +110,54 @@ const onError = (err) => {
   
   color:gray;
   padding:8px;
+}
+
+@media (max-width: 992px) {
+
+  .loginCard {
+    max-width: 400px;
+    padding:16px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .mergelogo {
+    width: 70px;
+    height: 70px;
+
+    .logo-sign {
+      width: 42px;
+      height: 42px;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+
+  .loginCard {
+    max-width: 300px;
+    padding:12px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .subTitle {
+    font-size: 12px;
+  }
+
+  .mergelogo {
+    width: 60px;
+    height: 60px;
+
+    .logo-sign {
+      width: 35px;
+      height: 35px;
+    }
+  }
 }
 
 </style>

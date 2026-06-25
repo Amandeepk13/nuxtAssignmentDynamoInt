@@ -17,10 +17,10 @@ const appStore = useApplicationsStore();
 /**
  * Reactive states
  */
-const repoName = ref("");
-const repoType = ref("");
-const repoDesc = ref("");
-const repoLink = ref("");
+const appName = ref("");
+const appType = ref("");
+const appDesc = ref("");
+const appLink = ref("");
 const isCreating = ref(false); //tracks repository creation request
 
 
@@ -29,11 +29,11 @@ const isCreating = ref(false); //tracks repository creation request
  */
 // determines whether all fields are completed
 const isFormCompleted = computed(() => {
-  return repoName.value && repoType.value && repoDesc.value && repoLink.value;
+  return appName.value && appType.value && appDesc.value && appLink.value;
 });
 // determines whether any field has input
 const isInputPresent = computed(() => {
-  return repoName.value || repoType.value || repoDesc.value || repoLink.value;
+  return appName.value || appType.value || appDesc.value || appLink.value;
 });
 
 
@@ -43,10 +43,10 @@ const isInputPresent = computed(() => {
 
  // clear all form fields
  const resetFields = () => {
-  repoName.value = "";
-  repoType.value = "";
-  repoDesc.value = "";
-  repoLink.value = "";
+  appName.value = "";
+  appType.value = "";
+  appDesc.value = "";
+  appLink.value = "";
 };
 
 // create new repository
@@ -56,10 +56,10 @@ const createRepo = async () => {
     isError.value = false;
 
     const response = await appStore.createApplication({
-      name: repoName.value,
-      type: repoType.value,
-      description: repoDesc.value,
-      repositoryLink: repoLink.value
+      name: appName.value,
+      type: appType.value,
+      description: appDesc.value,
+      repositoryLink: appLink.value
     });
 
     showSuccess(response.message)
@@ -92,7 +92,7 @@ const createRepo = async () => {
           <div class="col-12">
             <div class="formgroup">
               <label>Repository Name</label><br />
-              <input v-model="repoName" type="text" placeholder="Enter the repository name" required />
+              <input v-model="appName" type="text" placeholder="Enter the repository name" required />
             </div>
           </div>
         </div>
@@ -108,9 +108,9 @@ const createRepo = async () => {
               class="btn dropdown-toggle filterBtn"
               type="button"
               data-bs-toggle="dropdown"
-              :style="{ color: repoType ? 'black' : 'gray'}"
+              :style="{ color: appType ? 'black' : 'gray'}"
             >
-              {{ repoType || "Select the type" }}
+              {{ appType || "Select the type" }}
 
               <img
                 src="../assets/img/dropdown.svg"
@@ -121,20 +121,20 @@ const createRepo = async () => {
 
             <ul class="dropdown-menu customMenu">
               <li>
-                <button type="button" class="dropdown-item" @click="repoType = 'Applications'" 
+                <button type="button" class="dropdown-item" @click="appType = 'Applications'" 
                 >
                   Applications
                 </button>
               </li>
 
               <li>
-                <button type="button" class="dropdown-item" @click="repoType = 'Stacks'" >
+                <button type="button" class="dropdown-item" @click="appType = 'Stacks'" >
                   Stacks
                 </button>
               </li>
 
               <li>
-                <button type="button" class="dropdown-item" @click="repoType = 'Library'" >
+                <button type="button" class="dropdown-item" @click="appType = 'Library'" >
                   Library
                 </button>
               </li>
@@ -147,7 +147,7 @@ const createRepo = async () => {
        <div class="repoLinkField col-12 col-md-7">
         <div class="formgroup">
           <label>Repository Link</label><br />
-          <input v-model="repoLink" type="url" placeholder="Enter the url of repository" required/>
+          <input v-model="appLink" type="url" placeholder="Enter the url of repository" required/>
         </div>
         </div>
 
@@ -157,7 +157,7 @@ const createRepo = async () => {
         <div class="col-12">
            <div class="formgroup">
               <label>Repository Description</label><br />
-              <textarea v-model="repoDesc" rows="5" placeholder="Short summary of this repository and purpose" required>
+              <textarea v-model="appDesc" rows="5" placeholder="Short summary of this repository and purpose" required>
               </textarea>
             </div>
           </div>
@@ -298,6 +298,7 @@ const createRepo = async () => {
   top: 4px;
   border-radius: $border-radius-lg;
   padding: 12px 16px;
+  z-index:1001;
   box-shadow: $box-shadow-notiBox;
 
   .closeBtn{

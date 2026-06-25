@@ -14,7 +14,7 @@ import { dbOperations } from "../../libs/dynamo-service";
 /**
  * repository schema needed for validation
  */
-const repositorySchema = z.object({
+const appSchema = z.object({
   name: z.string().trim().min(1, "Repository name is required"),
   type: z.enum(["Applications", "Stacks", "Library"], {
     error: "Invalid repository type",
@@ -45,7 +45,7 @@ export default defineEventHandler(async(event)=>{
   let data;
 
   try {
-    data = repositorySchema.parse(body);
+    data = appSchema.parse(body);
     } catch (err) {
 
       if (err instanceof ZodError) {

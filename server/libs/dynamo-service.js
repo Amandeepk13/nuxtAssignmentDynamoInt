@@ -96,7 +96,7 @@ export const dbOperations = {
   /**
    * Update Repository State
    */
-  async updateApplicationData(application, requestingUser) {
+  async updateApplicationData(application, requestingUserEmail) {
 
     try{
 
@@ -110,7 +110,7 @@ export const dbOperations = {
           PK : "repo",
           SK : `repo#${application.name}`
         },
-        UpdateExpression: `SET merged= :merged, mergedAt= :mergedAt, mergedBy= :mergedBy, #status= :status`,
+        UpdateExpression: `SET merged= :merged, mergedAt= :mergedAt, mergedBy= :mergedBy, mergedByEmail = :mergedByEmail, #status= :status`,
 
         ExpressionAttributeNames : {
           "#status" : "status"
@@ -136,6 +136,7 @@ export const dbOperations = {
         updateParams.ExpressionAttributeValues = {
           ":merged" : application.merged,
           ":mergedBy" : application.mergedBy,
+          ":mergedByEmail": application.mergedByEmail,
           ":mergedAt" : application.mergedAt,
           ":status" : application.status,
           ":false" : false // nobody yet taken
@@ -151,13 +152,14 @@ export const dbOperations = {
          * 
          */
         
-        updateParams.ConditionExpression = "mergedBy = :currentUser";
+        updateParams.ConditionExpression = "mergedByEmail = :currentUserEmail";
         updateParams.ExpressionAttributeValues = {
           ":merged": application.merged,
-          ":mergedBy" : application.mergedBy, 
+          ":mergedBy" : application.mergedBy,
+          ":mergedByEmail": application.mergedByEmail, 
           ":mergedAt" : application.mergedAt,
           ":status" : application.status,
-          ":currentUser" : requestingUser 
+          ":currentUserEmail" : requestingUserEmail 
         }
       }
 

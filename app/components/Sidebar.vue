@@ -67,7 +67,7 @@
 <style lang="scss" scoped>
 
   .sidebar{
-     width:200px;
+     width:194px;
      min-height: 100vh;
      padding:20px 0px;
      overflow: hidden;
@@ -78,11 +78,17 @@
      
 
      &.collapsed{
-      width:28px;
+      width:80px;
 
       .sidebarContainer{
-        opacity:0;
-        visibility:hidden;
+         max-width:65px;
+      }
+
+      .linkBtn{
+        justify-content: center;
+      }
+      span{
+        display: none;
       }
 
      }
@@ -134,14 +140,14 @@
 @media (max-width: 992px){
 
   .sidebar{
-    width:160px;
+    width:156px;
 
     .sidebarContainer{
-      width:150px;
+      width:144px;
 
      .linkBtn{
-        font-size:12px;
-        gap:8px;
+        font-size:11px;
+        gap:6px;
         padding:10px 6px;
       }  
     }
@@ -158,7 +164,7 @@
       width:130px;
 
       .linkBtn{
-        font-size:12px;
+        font-size:10px;
         padding:8px 4px;
         gap:4px;
 
@@ -170,17 +176,10 @@
         width:60px;
 
         .sidebarContainer{
-          opacity: 1;
-          visibility: visible;
-          max-width: 100%;
+          max-width: 44px;
+          padding:0px;
         }
-
-        .linkBtn{
-          justify-content: center;
-        }
-        span{
-          display:none;
-        }
+        
 
       }
     

@@ -18,7 +18,7 @@
 </script>
 
 <template>
-  <div class="loginPage">
+  <div class="loginPage container-fluid">
     <LoginComponent/>
   </div>
 </template>
