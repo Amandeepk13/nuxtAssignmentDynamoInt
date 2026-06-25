@@ -10,6 +10,16 @@
 
   const isSidebarOpen = ref(true)
 
+  /**
+   * Lifecycle method
+   * - for styling mobile responsiveness
+   */
+  onMounted(() => {
+  if (window.innerWidth <= 576) {
+    isSidebarOpen.value = false
+  }
+})
+
   const toggleSidebar = () => {
     isSidebarOpen.value = !isSidebarOpen.value
   }
@@ -144,7 +154,7 @@
     height:34px;
 
     &.collapsed{
-      left:40px;
+      left:74px;
     }
 
     img{

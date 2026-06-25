@@ -16,8 +16,8 @@ useHead({
 <template>
 
   <div class="contentContainer">
-      <h1 tabindex="0">Admin Panel</h1>
-      <p tabindex="0">Manage repositories from a single admin workspace</p>
+      <h1 tabindex="0">Add Repository</h1>
+      <p tabindex="0">Create a new repository entry for token management</p>
 
       <!-- Repository Form -->
       <AddRepository />

@@ -209,11 +209,11 @@ td{
 }
 
 .dateText{
-  font-size: $font-forDesc; 
+  font-size: $font-forCaption; 
 }
 
 .timeText{
-  font-size: $font-forCaption;
+  font-size: 11px;
 }
 
 .mergeBtn, .mergedBtn{
@@ -224,7 +224,7 @@ td{
   border-radius: $border-radius-lg;
   width: 64px;
   height:30px;
-  font-size: $font-forDesc;
+  font-size: $font-forCaption;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -312,6 +312,7 @@ p{
   padding: 4px 8px;
   border-radius: $border-radius-lg;
   font-size:12px;
+  white-space: nowrap;  
 
   &.available {
     background-color: black;

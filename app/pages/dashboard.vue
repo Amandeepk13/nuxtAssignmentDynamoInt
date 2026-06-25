@@ -9,15 +9,18 @@
 //fetch currently authenticated user from session
 const { user } = useUserSession()
 
-// dynamic page title based on user
-useHead({
-  title: user?.role === 'admin' ? 'Admin Dashboard' : 'Dashboard'
-})
 
 // Check if user is an admin or normal user
   const isAdmin = computed(() => {
     return user.value?.role === 'admin'; 
   });
+  
+// dynamic page title based on user
+useHead({
+  title: () => isAdmin.value ? 'Admin Dashboard' : 'Dashboard'
+})
+
+
 
 </script>
 

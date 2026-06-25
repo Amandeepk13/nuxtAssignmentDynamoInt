@@ -84,8 +84,7 @@ const createRepo = async () => {
 
 <template>
   <div class="innerContainer">
-    <h2 tabindex="0">Add Repository</h2>
-    <p tabindex="0">Create a new repository entry for token management</p>
+    
 
     <div class="formCard">
       <form class="addRepoForm" @submit.prevent="createRepo">
@@ -174,8 +173,8 @@ const createRepo = async () => {
             </div>
           </div>
            
-          <div class="col-12 col-md-6 d-flex">
-            <div class="formActions d-flex flex-column flex-sm-row">
+          <div class="col-12 col-md-6">
+            <div class="formActions">
               <button type="button" class="cancelBtn " @click="resetFields"
               :disabled="!isInputPresent">
               Cancel
@@ -262,7 +261,7 @@ const createRepo = async () => {
           gap: 8px;
           width: 100%;
           padding: 8px 0;
-          flex-wrap: nowrap;
+          flex-wrap: wrap;
           margin-left: auto;
 
           button {
@@ -272,9 +271,13 @@ const createRepo = async () => {
             font-weight: 600;
             background-color: white;
             color: black;
-            height: 50px;
+            min-height: 50px;
             cursor: pointer;
-            min-width:120px;
+            min-width:0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
           }
 
           button:hover {
@@ -370,6 +373,27 @@ const createRepo = async () => {
     }
 
   }
+  }
+}
+
+@media (max-width: 576px) {
+
+  .innerContainer {
+    padding: 12px 16px 20px;
+  }
+
+  .formCard {
+    padding: 0;
+  }
+
+  .formActions {
+    justify-content: space-between;
+    width: 100%;
+
+    button {
+      flex: 1;
+      font-size:14px;
+    }
   }
 }
 </style>
