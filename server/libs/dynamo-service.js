@@ -177,7 +177,7 @@ export const dbOperations = {
   /**
    * Check Admin User
    */
-  async listAdminUsers(email) {
+  async getAdminUsers(email) {
 
     try {
       const data = await dynamoDB.send(

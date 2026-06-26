@@ -29,7 +29,7 @@ export default defineEventHandler( async (event) => {
    /**
     * User Role assigned
     */
-   const isAdmin = await dbOperations.listAdminUsers( email );
+   const isAdmin = await dbOperations.getAdminUsers( email );
    const role = isAdmin ? 'admin' : 'user';
 
    /**
