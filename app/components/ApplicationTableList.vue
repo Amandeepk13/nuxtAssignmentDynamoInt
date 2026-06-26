@@ -8,6 +8,12 @@
  */
 
 /**
+ * imports
+ */
+import lockedIcon from "../assets/img/lock.svg";
+import lockOpenIcon from "../assets/img/lock-open.svg"
+
+/**
  * Props
  */
 const props = defineProps({
@@ -132,7 +138,7 @@ const handleMerge = async (applicationName) =>{
 
         <td><button @click="handleMerge(application.name,application)" :disabled="application.merged && application.mergedByEmail !== user.email"  :class="application.merged ? 'mergedBtn' : 'mergeBtn'" role="button" :aria-label= "application.merged ? 'Token is taken' : 'Click to take token'" >
           <div class="btnContent">
-            <img src="../assets/img/lock.svg" aria-hidden = "true"/>
+            <img :src="application.merged ? lockedIcon : lockOpenIcon " aria-hidden = "true"/>
             <span>{{ application.merged ? 'Taken' : 'Take' }}</span>
           </div> </button>
         </td>
@@ -217,18 +223,16 @@ td{
 }
 
 .mergeBtn, .mergedBtn{
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  cursor: pointer;
-  border-radius: $border-radius-lg;
-  width: 64px;
-  height:30px;
-  font-size: $font-forCaption;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 .btnContent{
   display:flex;
   align-items:center;
