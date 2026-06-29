@@ -1,39 +1,75 @@
 <script setup>
-const showMsg = ref(false);
-const msg = ref("");
-const isError = ref(false);
+/**
+ * AddRepository Component
+ * 
+ * 
+ * Provide Form to admins for creating new repositories
+ */
 
-const repoName = ref("");
-const repoType = ref("");
-const repoDesc = ref("");
-const repoLink = ref("");
 
-const isCreating = ref(false);
+ /**
+  * Composables / store
+  */
+const { showMsg, message, isError, showSuccess, showError, closeNotification } = useNotification()
 
-const appStore = useApplicationStore();
+const appStore = useApplicationsStore();
 
+/**
+ * Reactive states
+ */
+const appName = ref("");
+const appType = ref("");
+const appDesc = ref("");
+const appLink = ref("");
+const isCreating = ref(false); //tracks repository creation request
+
+
+/**
+ * Computed Properties
+ */
+// determines whether all fields are completed
+const isFormCompleted = computed(() => {
+  return appName.value && appType.value && appDesc.value && appLink.value;
+});
+// determines whether any field has input
+const isInputPresent = computed(() => {
+  return appName.value || appType.value || appDesc.value || appLink.value;
+});
+
+
+/**
+ * Utility Functions
+ */
+
+ // clear all form fields
+ const resetFields = () => {
+  appName.value = "";
+  appType.value = "";
+  appDesc.value = "";
+  appLink.value = "";
+};
+
+// create new repository
 const createRepo = async () => {
   try {
     isCreating.value = true;
     isError.value = false;
 
-    await appStore.createApplication({
-      name: repoName.value,
-      type: repoType.value,
-      description: repoDesc.value,
-      repositoryLink: repoLink.value
+    const response = await appStore.createApplication({
+      name: appName.value,
+      type: appType.value,
+      description: appDesc.value,
+      repositoryLink: appLink.value
     });
 
-    msg.value = `'${repoName.value}' is successfully created`;
-    showMsg.value = true;
-
+    showSuccess(response.message)
+    
     resetFields();
 
   } catch (err) {
-    msg.value = `'${repoName.value}' is already present`;
-    isError.value = true;
-    showMsg.value = true;
-
+    
+    showError(err?.data?.message)
+    
   } finally{
     isCreating.value = false;
   }
@@ -42,21 +78,13 @@ const createRepo = async () => {
     showMsg.value = false;
   }, 5000);
 };
-const resetFields = () => {
-  repoName.value = "";
-  repoType.value = "";
-  repoDesc.value = "";
-};
 
-const isFormCompleted = computed(() => {
-  return repoName.value && repoType.value && repoDesc.value && repoLink.value;
-});
+
 </script>
 
 <template>
   <div class="innerContainer">
-    <h2 tabindex="0">Add Repository</h2>
-    <p tabindex="0">Create a new repository entry for token management</p>
+    
 
     <div class="formCard">
       <form class="addRepoForm" @submit.prevent="createRepo">
@@ -64,7 +92,7 @@ const isFormCompleted = computed(() => {
           <div class="col-12">
             <div class="formgroup">
               <label>Repository Name</label><br />
-              <input v-model="repoName" type="text" placeholder="Enter the repository name" required />
+              <input v-model="appName" type="text" placeholder="Enter the repository name" required />
             </div>
           </div>
         </div>
@@ -80,8 +108,9 @@ const isFormCompleted = computed(() => {
               class="btn dropdown-toggle filterBtn"
               type="button"
               data-bs-toggle="dropdown"
+              :style="{ color: appType ? 'black' : 'gray'}"
             >
-              {{ repoType || "Select the type" }}
+              {{ appType || "Select the type" }}
 
               <img
                 src="../assets/img/dropdown.svg"
@@ -92,19 +121,20 @@ const isFormCompleted = computed(() => {
 
             <ul class="dropdown-menu customMenu">
               <li>
-                <button type="button" class="dropdown-item" @click="repoType = 'Applications'" >
+                <button type="button" class="dropdown-item" @click="appType = 'Applications'" 
+                >
                   Applications
                 </button>
               </li>
 
               <li>
-                <button type="button" class="dropdown-item" @click="repoType = 'Stacks'" >
+                <button type="button" class="dropdown-item" @click="appType = 'Stacks'" >
                   Stacks
                 </button>
               </li>
 
               <li>
-                <button type="button" class="dropdown-item" @click="repoType = 'Library'" >
+                <button type="button" class="dropdown-item" @click="appType = 'Library'" >
                   Library
                 </button>
               </li>
@@ -117,7 +147,7 @@ const isFormCompleted = computed(() => {
        <div class="repoLinkField col-12 col-md-7">
         <div class="formgroup">
           <label>Repository Link</label><br />
-          <input v-model="repoLink" type="url" placeholder="Enter the url of repository" required/>
+          <input v-model="appLink" type="url" placeholder="Enter the url of repository" required/>
         </div>
         </div>
 
@@ -127,7 +157,7 @@ const isFormCompleted = computed(() => {
         <div class="col-12">
            <div class="formgroup">
               <label>Repository Description</label><br />
-              <textarea v-model="repoDesc" rows="5" placeholder="Short summary of this repository and purpose" required>
+              <textarea v-model="appDesc" rows="5" placeholder="Short summary of this repository and purpose" required>
               </textarea>
             </div>
           </div>
@@ -139,13 +169,14 @@ const isFormCompleted = computed(() => {
           <div class="col-12 col-md-6">
             <div class="formgroup">
               <label>Initial Token Status</label><br />
-              <input type="text" value="Available" disabled />
+              <input type="text" placeholder="Available" disabled />
             </div>
           </div>
            
-          <div class="col-12 col-md-6 d-flex">
-            <div class="formActions d-flex flex-column flex-sm-row">
-              <button type="button" class="cancelBtn " @click="resetFields">
+          <div class="col-12 col-md-6">
+            <div class="formActions">
+              <button type="button" class="cancelBtn " @click="resetFields"
+              :disabled="!isInputPresent">
               Cancel
               </button>
               <button type="submit" class="createBtn " :disabled="!isFormCompleted || isCreating" >
@@ -161,10 +192,10 @@ const isFormCompleted = computed(() => {
 
       <div v-if="showMsg" class="alert notification d-flex justify-content-between align-items-center"
         :class="isError ? 'alert-danger' : 'alert-success'" >
-        <span>{{ msg }}</span>
-        <span class="closeBtn" @click="showMsg = false">
+        <span>{{ message }}</span>
+        <button type="button" aria-label="Close Notification" class="closeBtn" @click="closeNotification">
           <img src="../assets/img/crossIcon.svg" aria-hidden="true"/>
-        </span>
+        </button>
       </div>
     </div>
   </div>
@@ -173,11 +204,11 @@ const isFormCompleted = computed(() => {
 <style lang="scss" scoped>
 .innerContainer {
   background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
+  box-shadow: $box-shadow-lg;
+  border-radius: $border-radius-md;
   width: 100%;
   padding: 12px 28px 28px;
-  margin: 8px;
+  margin: 0px;
   
 
   h2 {
@@ -185,13 +216,13 @@ const isFormCompleted = computed(() => {
     margin-bottom: 2px;
   }
   p {
-    font-size: 14px;
+    font-size: $font-forDesc;
     color: gray;
   }
 
   .formCard {
     background-color: white;
-    border-radius: 8px;
+    border-radius: $border-radius-md;
     padding: 0px 12px;
     margin: 0;
 
@@ -203,16 +234,17 @@ const isFormCompleted = computed(() => {
         padding: 8px;
 
         label {
-          
+          font-size: $font-forDesc;
           margin-bottom: -6px;
         }
         input,
         textarea {
-          background-color: rgba(223, 227, 230, 0.374);
+          font-size: $font-forDesc;
+          background-color: $bgcolor-ofEachFields;
           border: none;
           padding: 10px 18px;
-          color: gray;
-          border-radius: 8px;
+          border-radius: $border-radius-md;
+          color:black;
         }
         
         .tokenField {
@@ -229,19 +261,23 @@ const isFormCompleted = computed(() => {
           gap: 8px;
           width: 100%;
           padding: 8px 0;
-          flex-wrap: nowrap;
+          flex-wrap: wrap;
           margin-left: auto;
 
           button {
             border: 1px solid rgba(235, 227, 227, 0.874);
             padding: 10px 14px;
-            border-radius: 20px;
+            border-radius: $border-radius-pill;
             font-weight: 600;
             background-color: white;
             color: black;
-            height: 50px;
+            min-height: 50px;
             cursor: pointer;
-            min-width:120px;
+            min-width:0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
           }
 
           button:hover {
@@ -255,40 +291,56 @@ const isFormCompleted = computed(() => {
         }
   }
 
-  .notification {
-    position: absolute;
-    top:20px;
-    right:16px;
-    min-width: 320px;
-    padding: 12px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+.notification{
+  position:absolute;
+  min-width: 320px;
+  right:8px;
+  top: 4px;
+  border-radius: $border-radius-lg;
+  padding: 12px 16px;
+  z-index:1001;
+  box-shadow: $box-shadow-notiBox;
+
+  .closeBtn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    margin-left:12px;
+
+    border: none;
+    background:none;
+    
+
+    img{
+      width:14px;
+      height:14px;
+    }
   }
-  .customDropdown{
-  width:250px;
 }
+  .customDropdown{
+    max-width:250px;
+  }
 
 .filterBtn{
   width:100%;
-  background-color:rgba(223, 227, 230, 0.374);
+  background-color: $bgcolor-ofEachFields;
   border:none;
-  border-radius:8px;
+  border-radius: $border-radius-md;
   padding:10px 18px;
-  color:gray;
+  color: gray;
+  font-size: $font-forDesc;
 
   display:flex;
   align-items:center;
   justify-content:space-between;
-
 
   &::after{
     display:none;
   }
   &:focus{
     outline:2px solid black;
+    color: black;
   }
 }
 
@@ -300,23 +352,49 @@ const isFormCompleted = computed(() => {
 .customMenu{
   width:100%;
   border:none;
-  border-radius:12px;
+  border-radius: $border-radius-lg;
   padding:8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  box-shadow: $box-shadow-md;
 
   .dropdown-item{
     width:100%;
     border:none;
     background:none;
     text-align:left;
-    border-radius:8px;
+    border-radius: $border-radius-lg;
     padding:10px 14px;
     cursor:pointer;
+    color: black !important;
 
     &:hover{
-      background-color: rgba(223, 227, 230, 0.5);
+      background-color: $bgcolor-ofEachFields;
     }
+    &:focus, &:active {
+      color: black !important;
+    }
+
   }
+  }
+}
+
+@media (max-width: 576px) {
+
+  .innerContainer {
+    padding: 12px 16px 20px;
+  }
+
+  .formCard {
+    padding: 0;
+  }
+
+  .formActions {
+    justify-content: space-between;
+    width: 100%;
+
+    button {
+      flex: 1;
+      font-size:14px;
+    }
   }
 }
 </style>

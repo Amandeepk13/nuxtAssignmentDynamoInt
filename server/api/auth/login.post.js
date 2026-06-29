@@ -1,10 +1,24 @@
-import { Admin } from "../../models/adminSchema"
+import { dbOperations } from "../../libs/dynamo-service";
+
+/**
+ * POST /api/auth/login
+ * 
+ * Creates authenticated user session
+ * 
+ */
 
 export default defineEventHandler( async (event) => {
-   const body = await readBody(event);
 
+  /**
+   * Request Body
+   */
+   const body = await readBody(event);
    const { name, email, picture } = body
 
+
+   /**
+    * Validation
+    */
    if(!name || !email || !picture){
     throw createError({
       statusCode: 400,
@@ -12,14 +26,27 @@ export default defineEventHandler( async (event) => {
     })
    }
 
-   const isAdmin = await Admin.findOne( { email });
+   /**
+    * User Role assigned
+    */
+   const isAdmin = await dbOperations.getAdminUsers( email );
    const role = isAdmin ? 'admin' : 'user';
 
+   /**
+    * Session Creation
+    */
    await setUserSession(event, {
     user:{
       name, email, picture, role
     }
    })
   
-  return { role }; 
+   /**
+    * Success Response
+    */
+  return { 
+    success : true,
+    message: "User is successfully logged in",
+    role 
+  }; 
 })

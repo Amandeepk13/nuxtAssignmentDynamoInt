@@ -1,3 +1,10 @@
+/**
+ * 
+ * useAuth Composable
+ * 
+ * handles authentication action
+ */
+
 export const useAuth = () => {
 
   const { fetch: refreshSession } = useUserSession()
@@ -14,11 +21,7 @@ export const useAuth = () => {
     await refreshSession();
     
     
-    if(res.role === 'admin'){
-      await navigateTo('/admin')
-    } else {
-      await navigateTo('/')
-    }
+    await navigateTo('/dashboard')
 
   };
 

@@ -1,0 +1,10 @@
+@use "~/assets/scss/variables.scss" as *;
+
+html,body {
+  font-family: $font-primary;
+  background-color: $bgcolor-primary;
+}
+
+button, input, textarea, select {
+  font-family: inherit;
+}

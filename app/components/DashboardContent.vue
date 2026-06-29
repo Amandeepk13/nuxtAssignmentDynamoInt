@@ -1,27 +1,43 @@
 <script setup>
-const store = useApplicationStore();
+/**
+ * Dashboard Component
+ * 
+ * 
+ * Encapsulates the Repositories List and access fields 
+ */
+
+/**
+ * Composables
+ */
+const store = useApplicationsStore();
 const loader = useGlobalLoader();
 
+// local state
 let interval = null;
 
+/**
+ * Lifecycle Hooks
+ */
 onMounted(async () => {
   loader.value = true;
   
-
   try {
-    await store.fetchApplications();
+    await store.fetchApplications(); // fetches repositories
   } finally {
     loader.value = false;
   }
 
   interval = setInterval(() => {
     store.fetchApplications();
-  }, 5000);
+  }, 3000);
+
+  
 });
 
 onUnmounted(async () => {
   clearInterval(interval);
 });
+
 </script>
 
 <template>
@@ -47,7 +63,7 @@ onUnmounted(async () => {
       </div>
       </div>
 
-      <div class="col-12 col-md-6 col-lg-auto">
+      <div class="col-12 col-sm-6 col-lg-auto">
       <div class="dropdown customDropdown">
         <button class="btn dropdown-toggle filterBtn" type="button" data-bs-toggle="dropdown">
           {{ store.selectedType }}
@@ -84,7 +100,7 @@ onUnmounted(async () => {
       </div>
 
 
-      <div class="col-12 col-md-6 col-lg-auto">
+      <div class="col-12 col-sm-6 col-lg-auto">
       <div class="dropdown customDropdown">
         <button class="btn dropdown-toggle filterBtn" type="button" data-bs-toggle="dropdown">
           {{ store.selectedStatus }}
@@ -124,35 +140,30 @@ onUnmounted(async () => {
 <style lang="scss" scoped>
 .mainContent {
   width: 100%;
-  max-width: 1200px;
   position: relative;
-}
 
+}
 .dashboardHead {
   text-align: left;
   margin-bottom: 40px;
 
   h1 {
-    font-size: 28px;
+    font-size: $font-heading;
   }
   p {
+    font-size: $font-forDesc;
     color: gray;
   }
 }
 
 .filterBars {
-  display: flex;
-  gap: 15px;
   margin-bottom: 25px;
-  align-items: center;
-
   width: 100%;
 }
 
 .searchBar {
-  flex: 1;
-  max-width: 900px;
-  min-width: 300px;
+  width:100%;
+  min-width: 0;
   position: relative;
 
   .searchIcon {
@@ -169,23 +180,23 @@ onUnmounted(async () => {
   .searchInput {
     width: 100%;
     padding: 10px 12px 10px 35px;
-    border-radius: 8px;
+    border-radius: $border-radius-md;
     border: none;
-    background-color: rgba(223, 227, 230, 0.374);
+    background-color: $bgcolor-ofEachFields;
     box-sizing: border-box;
   }
 }
 
 
 .customDropdown {
-  width: 170px;
+  min-width: 170px;
 }
 
 .filterBtn {
   width: 100%;
-  background-color: rgba(223, 227, 230, 0.374);
+  background-color: $bgcolor-ofEachFields;
   border: none;
-  border-radius: 12px;
+  border-radius: $border-radius-lg;
   padding: 10px 14px;
   color: black;
   display: flex;
@@ -208,18 +219,40 @@ onUnmounted(async () => {
 .customMenu {
   width: 100%;
   border: none;
-  border-radius: 14px;
+  border-radius: $border-radius-lg;
   padding: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  box-shadow: $box-shadow-md;
 
   .dropdown-item {
-    border-radius: 10px;
+    border-radius: $border-radius-lg;
     padding: 10px 14px;
     cursor: pointer;
+    color: black !important;
 
     &:hover {
-      background-color: rgba(223, 227, 230, 0.5);
+      background-color: $bgcolor-ofEachFields;
     }
+    &:focus, &:active {
+      color: black !important;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+
+  .customDropdown {
+    width: 100%;
+  }
+
+}
+@media (max-width: 576px) {
+
+  .customDropdown {
+    width: 100%;
+  }
+
+  .filterBtn {
+    padding: 10px 12px;
   }
 }
 </style>

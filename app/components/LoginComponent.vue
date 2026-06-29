@@ -1,11 +1,25 @@
 <script setup>
+/**
+ * Login Component
+ * 
+ * 
+ * Handles Google OAuth authentication
+ * 
+ */
 
+/**
+ * Composables
+ */
 const {login} = useAuth()
 const loader = useGlobalLoader()
 
 
+/**
+ * Authentication Handlers
+ */
+
+// Handles successful authentication
 const onSuccess = async(e) => {
-  // console.log("user claims", e.claims)
   try{
     loader.value = true;
 
@@ -17,6 +31,7 @@ const onSuccess = async(e) => {
   
 };
 
+// Handles failed authentication
 const onError = (err) => {
   console.error(err);
 };
@@ -55,13 +70,12 @@ const onError = (err) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 10%;
   width: 100%;
   max-width: 450px;
   text-align: center;
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2); 
+  border-radius: $border-radius-lg;
+  box-shadow: $box-shadow-primary; 
 }
 
 .mergeLogoContainer{
@@ -86,16 +100,64 @@ const onError = (err) => {
 }
 
 .title{
-  font-size:32px;
-  font-family:Arial, Helvetica, sans-serif;
+  font-size: $font-heading;
+  
   margin: 10px;
   padding:8px;
 }
 .subTitle{
   font-size: 16px;
-  font-family:Arial, Helvetica, sans-serif;
+  
   color:gray;
   padding:8px;
+}
+
+@media (max-width: 992px) {
+
+  .loginCard {
+    max-width: 400px;
+    padding:16px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .mergelogo {
+    width: 70px;
+    height: 70px;
+
+    .logo-sign {
+      width: 42px;
+      height: 42px;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+
+  .loginCard {
+    max-width: 300px;
+    padding:12px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .subTitle {
+    font-size: 12px;
+  }
+
+  .mergelogo {
+    width: 60px;
+    height: 60px;
+
+    .logo-sign {
+      width: 35px;
+      height: 35px;
+    }
+  }
 }
 
 </style>

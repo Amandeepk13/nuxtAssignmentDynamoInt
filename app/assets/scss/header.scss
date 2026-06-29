@@ -3,8 +3,8 @@
   display:flex;
   justify-content: center;
   background-color: white;
-  font-family: Arial, Helvetica, sans-serif;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  
+  box-shadow: $box-shadow-lg;
   border-radius:6px;
   min-height: 60px;
   box-sizing: border-box;
@@ -30,10 +30,9 @@
     align-items: center;
     justify-content: center;
     background-color: rgb(17, 101, 245);
-    border-radius: 8px;
+    border-radius: $border-radius-md;
     width: 35px;
     height: 35px;
-    border-radius:8px;
   }
 
   .mergeLogo {
@@ -70,7 +69,7 @@
       display: flex;
       align-items: center;
       cursor: pointer;
-      border-radius: 22px;
+      border-radius: $border-radius-pill;
       border: 1px solid #a8a5a573;
       padding: 6px;
       gap: 4px;
@@ -103,20 +102,27 @@
     }
     
     .customDropdownMenu{
-      min-width: 140px;
+      min-width: 100%;
+      width: 100%;
       border: none;
-      border-radius: 12px;
+      border-radius: $border-radius-lg;
       padding: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      box-shadow: $box-shadow-md;
     
-      .LogoutBtn, .menuBtn{
-        background-color: rgba(223, 227, 230, 0.589);
+      .LogoutBtn{
+        background-color: $bgcolor-ofEachFields;
         padding:8px;
-        border-radius: 8px;
+        border-radius: $border-radius-md;
         display:flex;
         align-items: center;
         justify-content: center;
         gap:6px;
+        color: black !important;
+
+        &:active,&:focus{
+          color:black !important;
+          background-color: rgba(223, 227, 230, 0.5);
+        }
 
         .logoutIcon{
           color:black;

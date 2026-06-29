@@ -1,31 +1,11 @@
 <script setup>
+/**
+ * @file pages/index.vue
+ * @description Root Route. It redirects user landing on '/'
+ * to the dashboard page.
+ */
 
-// definePageMeta({
-//   middleware:'auth'
-// })
-
+await navigateTo('/dashboard')
 </script>
 
-<template>
-  <div class="mainContainer">
-    <DashboardContent />
-  </div>
-</template>
-
-
-
-<style lang="scss" scoped>
-
-.mainContainer{
- min-height: 100vh;
- background-color: rgba(240, 241, 243, 0.338);
- padding:20px;
- display: flex;
- justify-content: center;
- margin:4px;
- font-family: Arial, Helvetica, sans-serif;
- 
-}
-
-</style>
-
+<template></template>

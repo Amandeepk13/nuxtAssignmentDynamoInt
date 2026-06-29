@@ -10,20 +10,23 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@pinia/nuxt": "^0.11.3",
-    "mongoose": "^9.3.3",
-    "nuxt": "^4.4.2",
-    "nuxt-auth-utils": "^0.5.29",
-    "nuxt-google-auth": "^0.1.7",
-    "pinia": "^3.0.4",
-    "pinia-plugin-persistedstate": "^4.7.1",
-    "vue": "^3.5.30",
-    "vue-router": "^5.0.4"
+    "@aws-sdk/client-dynamodb": "3.1051.0",
+    "@aws-sdk/lib-dynamodb": "3.1051.0",
+    "@pinia/nuxt": "0.11.3",
+    "mongoose": "9.3.3",
+    "nuxt": "4.4.2",
+    "nuxt-auth-utils": "0.5.29",
+    "nuxt-google-auth": "0.1.7",
+    "pinia": "3.0.4",
+    "pinia-plugin-persistedstate": "4.7.1",
+    "vue": "3.5.30",
+    "vue-router": "5.0.4",
+    "zod": "4.4.3"
   },
   "devDependencies": {
-    "@bootstrap-vue-next/nuxt": "^0.45.3",
-    "@types/node": "^25.5.0",
-    "bootstrap": "^5.3.8",
-    "sass-embedded": "^1.99.0"
+    "@bootstrap-vue-next/nuxt": "0.45.3",
+    "@types/node": "25.5.0",
+    "bootstrap": "5.3.8",
+    "sass-embedded": "1.99.0"
   }
 }

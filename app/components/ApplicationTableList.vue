@@ -1,37 +1,42 @@
 <script setup>
+/**
+ * ApplicationTableList Component
+ * 
+ * 
+ * Displays repository information in tabular format.
+ * user can view, take(lock) or release token
+ */
 
-const store = useApplicationStore()
-const {user} = useUserSession()
+/**
+ * imports
+ */
+import lockedIcon from "../assets/img/lock.svg";
+import lockOpenIcon from "../assets/img/lock-open.svg"
 
-defineProps(["appsList"])
-
-const message = ref("")
-const showMsg = ref(false)
-const isError = ref(false)
-
-const handleMerge = async (applicationName, application) =>{
-  try{
-    await store.mergeApplication(applicationName);
-
-    if(!application.merged){
-       message.value = `'${ applicationName }' merging in process by you ! `
-       isError.value = false
-       showMsg.value = true
-    }
-
-  } catch(err){
-
-    const mergedUser = err.data.data.mergedBy;
-    message.value = `'${ applicationName }' is already in merging by ${ mergedUser } !`
-    isError.value = true
-    showMsg.value = true
+/**
+ * Props
+ */
+const props = defineProps({
+  // list of repositories
+  appsList:{
+    type: Array,
   }
+})
 
-  setTimeout(() => {
-  showMsg.value = false
-  }, 5000);
-}
 
+/**
+ * composables / stores
+ */
+const store = useApplicationsStore()
+const {user} = useUserSession()
+const { showMsg, message, isError, showSuccess, showError, closeNotification } = useNotification()
+
+
+/**
+ * Utility Methods
+ */
+
+// formats timestamp
 const formatDateTime = (date) => {
   if (!date) return null
 
@@ -51,6 +56,37 @@ const formatDateTime = (date) => {
     })
   }
 }
+
+/**
+ * Computed Properties
+ */
+const formattedApplications = computed(() =>
+  props.appsList.map(app => ({
+    ...app,
+    formattedDateTime: formatDateTime(app.mergedAt)
+  }))
+)
+
+/**
+ * Business Logic
+ */
+// handles merging request
+const handleMerge = async (applicationName) =>{
+  try{
+    const response = await store.mergeApplication(applicationName);
+ 
+    await store.fetchSingleApplication(applicationName); //fetches latest state
+
+    showSuccess(response.message)
+
+  } catch(err){
+
+    showError(err?.data?.statusMessage)
+    
+  }
+
+}
+
 
 </script>
 
@@ -73,7 +109,7 @@ const formatDateTime = (date) => {
     </thead>
 
     <tbody class="tableBody">
-       <tr v-for="application in appsList" :key="application.name">
+       <tr v-for="application in formattedApplications" :key="application.name">
         <td>{{ application.name }}</td>
         <td>
             <span class="typeBadge" :class="application.type.toLowerCase()">{{ application.type}}</span>
@@ -85,14 +121,14 @@ const formatDateTime = (date) => {
         <td> {{ application.mergedBy || '-'}}</td>
 
         <td> 
-          <div v-if="application.mergedAt" class="dateTimeBox">
+          <div v-if="application.formattedDateTime" class="dateTimeBox">
     
             <span class="dateText">
-              {{ formatDateTime(application.mergedAt).date }}
+              {{ application.formattedDateTime.date }}
             </span>
 
             <span class="timeText">
-              {{ formatDateTime(application.mergedAt).time }}
+              {{ application.formattedDateTime.time }}
             </span>
 
           </div>
@@ -100,9 +136,9 @@ const formatDateTime = (date) => {
           <span v-else>-</span>
         </td>
 
-        <td><button @click="handleMerge(application.name,application)" :disabled="application.merged && application.mergedBy !== user.name"  :class="application.merged ? 'mergedBtn' : 'mergeBtn'" role="button" :aria-label= "application.merged ? 'Token is taken' : 'Click to take token'" >
+        <td><button @click="handleMerge(application.name,application)" :disabled="application.merged && application.mergedByEmail !== user.email"  :class="application.merged ? 'mergedBtn' : 'mergeBtn'" role="button" :aria-label= "application.merged ? 'Token is taken' : 'Click to take token'" >
           <div class="btnContent">
-            <img src="../assets/img/lock.svg"/>
+            <img :src="application.merged ? lockedIcon : lockOpenIcon " aria-hidden = "true"/>
             <span>{{ application.merged ? 'Taken' : 'Take' }}</span>
           </div> </button>
         </td>
@@ -110,7 +146,7 @@ const formatDateTime = (date) => {
         <td>
           <div class="repoLinkColumn">
 
-          <a :href="application.repositoryLink" target="_blank" rel="noopenor no-referrer" aria-label="Open repository">
+          <a :href="application.repositoryLink" target="_blank" rel="noopener noreferrer" aria-label="Open repository">
             <img src="../assets/img/redirectLinkIcon.svg" class="repoLinkIcon" aria-hidden="true"/>
 
           </a>
@@ -121,13 +157,13 @@ const formatDateTime = (date) => {
        </tr>
     </tbody>
   </table>
-  <p v-if="appsList.length === 0">No such repository is there !!!</p>
+  <p v-if="formattedApplications.length === 0">No such repository is there !!!</p>
   </div>
    <div v-if="showMsg" class="alert notification d-flex justify-content-between align-items-center"
   :class="isError ? 'alert-danger' : 'alert-success'">
      <span>{{ message }}</span>
-     <span class="closeBtn" @click="showMsg = false"><img src="../assets/img/crossIcon.svg" aria-hidden="true" />
-     </span>
+     <button type="button" class="closeBtn" @click="closeNotification" aria-label="Close Notification"><img src="../assets/img/crossIcon.svg" aria-hidden="true" />
+     </button>
    </div>
 
 </template>
@@ -137,17 +173,16 @@ const formatDateTime = (date) => {
  
  .tableContainer{
   width:100%;
-  border-radius: 12px;
+  border-radius: $border-radius-lg;
   overflow-x: auto;
   overflow-y: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: $box-shadow-primary;
   margin: 20px auto;
-  
+  background-color: white;
 }
 
 .applicationTable{
   width:100%;
-  min-width: 1000px;
   border-collapse: collapse;
 
 }
@@ -164,6 +199,9 @@ th{
 td{
   padding:12px;
   border-bottom: 1px solid rgb(224, 222, 222);
+  vertical-align: middle;
+  height: 60px;
+  font-size: $font-forDesc;
 }
 /* tbody tr:nth-child(odd){
   background-color: rgb(211, 210, 210);
@@ -173,31 +211,28 @@ td{
 .dateTimeBox{
   display:flex;
   flex-direction:column;
-  gap:1px;
   color:black;
 }
 
 .dateText{
-  font-size:14px;
-  
+  font-size: $font-forCaption; 
 }
 
 .timeText{
-  font-size:12px;
+  font-size: 11px;
 }
 
 .mergeBtn, .mergedBtn{
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  cursor: pointer;
-  border-radius: 14px;
-  width: 64px;
-  font-size:13px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 .btnContent{
   display:flex;
   align-items:center;
@@ -209,7 +244,7 @@ td{
   background-color: black;
 }
 .mergedBtn{
-  background-color: #b6b6b6;
+  background-color: $bgcolor-unavailableBadges;
 }
 
 p{
@@ -233,9 +268,10 @@ p{
   min-width: 320px;
   right:8px;
   top: 4px;
-  border-radius: 12px;
+  border-radius: $border-radius-lg;
   padding: 12px 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1001;
+  box-shadow: $box-shadow-notiBox;
 
   .closeBtn{
     display:flex;
@@ -243,6 +279,10 @@ p{
     justify-content:center;
     cursor:pointer;
     margin-left:12px;
+
+    border: none;
+    background:none;
+    
 
     img{
       width:14px;
@@ -256,34 +296,35 @@ p{
 
 .typeBadge {
   padding: 4px 8px;
-  border-radius: 12px;
-  font-size:12px;
+  border-radius: $border-radius-lg;
+  font-size: $font-forCaption;
   
   &.applications {
-    background-color: rgba(185, 216, 247, 0.689);
-    color:rgb(4, 31, 117);
+    background-color: $bgcolor-appBadge;
+    color: $textcolor-appBadge;
   }
   &.stacks {
-    background-color: rgba(247, 189, 247, 0.728);
-    color:rgb(171, 4, 171);
+    background-color: $bgcolor-stackBadge;
+    color: $textcolor-stackBadge;
   }
   &.library {
-    background-color: rgba(196, 247, 196, 0.735);
-    color:rgb(4, 58, 12);
+    background-color: $bgcolor-libBadge;
+    color:$textcolor-libBadge;
   }
 }
 
 .statusBadge {
   padding: 4px 8px;
-  border-radius: 12px;
+  border-radius: $border-radius-lg;
   font-size:12px;
+  white-space: nowrap;  
 
   &.available {
     background-color: black;
     color:white;
   }
   &.not-available {
-    background-color: #b6b6b6;
+    background-color: $bgcolor-unavailableBadges;
     color:white;
   }
 }
