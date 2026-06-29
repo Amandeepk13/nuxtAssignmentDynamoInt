@@ -139,7 +139,7 @@ const handleMerge = async (applicationName) =>{
         <td><button @click="handleMerge(application.name,application)" :disabled="application.merged && application.mergedByEmail !== user.email"  :class="application.merged ? 'mergedBtn' : 'mergeBtn'" role="button" :aria-label= "application.merged ? 'Token is taken' : 'Click to take token'" >
           <div class="btnContent">
             <img :src="application.merged ? lockedIcon : lockOpenIcon " aria-hidden = "true"/>
-            <span>{{ application.merged ? 'Taken' : 'Take' }}</span>
+            <span>{{ application.merged ? 'Release' : 'Take' }}</span>
           </div> </button>
         </td>
 
