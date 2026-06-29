@@ -73,7 +73,7 @@
      overflow: hidden;
      transition: 0.3s ease;
      position:relative;
-     background-color: white;
+     background-color: $color-primary-white;
      flex-shrink:0;
      
 
@@ -119,8 +119,8 @@
         border-radius: $border-radius-md;
         font-size: 14px;
         font-weight: 600;
-        background-color: white;
-        color: black;
+        background-color: $color-primary-white;
+        color: $color-primary-black;
         transition:0.2s ease;
 
         .navIcon{

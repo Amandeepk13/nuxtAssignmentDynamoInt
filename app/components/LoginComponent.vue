@@ -87,7 +87,7 @@ const onError = (err) => {
   height:80px;
   background-color: rgb(17, 101, 245);
   border-radius:50%;
-  color:white;
+  color:$color-primary-white;
   display:flex;
   align-items:center;
   justify-content: center;
@@ -108,7 +108,7 @@ const onError = (err) => {
 .subTitle{
   font-size: 16px;
   
-  color:gray;
+  color:$color-gray;
   padding:8px;
 }
 

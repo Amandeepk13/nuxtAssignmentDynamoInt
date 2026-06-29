@@ -8,23 +8,13 @@
  * logout action
  */
 
- /**
-  * assets
-  */
-import mergeIcon from '~/assets/img/git-mergeIcon.svg'
-import pushIcon from '~/assets/img/git-pushIcon.svg'
 
  /**
   * composables
   */
  const { user, clear } = useUserSession()
  const loader = useGlobalLoader()
- const route = useRoute()
  
-/**
-* computed properties
-*/
-const isAdmin = computed( () => route.path === '/addrepository')
 
 /**
  * logout actions
@@ -56,7 +46,7 @@ const isAdmin = computed( () => route.path === '/addrepository')
 
        <div class="leftSection" aria-labelledby= "app-title app-subtitle" tabindex="0">
           <div class="logoBox">
-            <img :src= "isAdmin ? pushIcon : mergeIcon "  class="mergeLogo" alt="Logo" aria-hidden="true" />
+            <img src= "../assets/img/git-mergeIcon.svg "  class="mergeLogo" alt="Logo" aria-hidden="true" />
           </div>
           <div class="title" aria-hidden="true">
             <h2 id="app-title">Merge Token</h2>

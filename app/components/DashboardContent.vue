@@ -152,7 +152,7 @@ onUnmounted(async () => {
   }
   p {
     font-size: $font-forDesc;
-    color: gray;
+    color: $color-gray;
   }
 }
 
@@ -198,7 +198,7 @@ onUnmounted(async () => {
   border: none;
   border-radius: $border-radius-lg;
   padding: 10px 14px;
-  color: black;
+  color: $color-primary-black;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -227,13 +227,13 @@ onUnmounted(async () => {
     border-radius: $border-radius-lg;
     padding: 10px 14px;
     cursor: pointer;
-    color: black !important;
+    color: $color-primary-black !important;
 
     &:hover {
       background-color: $bgcolor-ofEachFields;
     }
     &:focus, &:active {
-      color: black !important;
+      color: $color-primary-black !important;
     }
   }
 }

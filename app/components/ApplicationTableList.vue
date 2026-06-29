@@ -100,7 +100,7 @@ const handleMerge = async (applicationName) =>{
         <th>Repository Name</th>
         <th>Type</th>
           <th>Description</th>
-          <th>Token Status</th>
+      
           <th>Token Holder</th>
           <th>Taken At</th>
           <th>Actions</th>
@@ -115,9 +115,9 @@ const handleMerge = async (applicationName) =>{
             <span class="typeBadge" :class="application.type.toLowerCase()">{{ application.type}}</span>
           </td>
         <td> {{ application.description }}</td>
-        <td> <span class="statusBadge" :class="application.status.toLowerCase().replace(' ', '-')">{{ application.status }} </span>
+       
           
-        </td>
+        
         <td> {{ application.mergedBy || '-'}}</td>
 
         <td> 
@@ -138,8 +138,8 @@ const handleMerge = async (applicationName) =>{
 
         <td><button @click="handleMerge(application.name,application)" :disabled="application.merged && application.mergedByEmail !== user.email"  :class="application.merged ? 'mergedBtn' : 'mergeBtn'" role="button" :aria-label= "application.merged ? 'Token is taken' : 'Click to take token'" >
           <div class="btnContent">
-            <img :src="application.merged ? lockedIcon : lockOpenIcon " aria-hidden = "true"/>
-            <span>{{ application.merged ? 'Taken' : 'Take' }}</span>
+            <img :src="application.merged ? lockOpenIcon : lockedIcon " aria-hidden = "true"/>
+            <span>{{ application.merged ? 'Release' : 'Take' }}</span>
           </div> </button>
         </td>
 
@@ -178,7 +178,7 @@ const handleMerge = async (applicationName) =>{
   overflow-y: hidden;
   box-shadow: $box-shadow-primary;
   margin: 20px auto;
-  background-color: white;
+  background-color: $color-primary-white;
 }
 
 .applicationTable{
@@ -211,7 +211,7 @@ td{
 .dateTimeBox{
   display:flex;
   flex-direction:column;
-  color:black;
+  color:$color-primary-black;
 }
 
 .dateText{
@@ -223,7 +223,7 @@ td{
 }
 
 .mergeBtn, .mergedBtn{
-    color: white;
+    color: $color-primary-white;
     border: none;
     padding: 8px 10px;
     cursor: pointer;
@@ -241,10 +241,10 @@ td{
 }
 
 .mergeBtn{
-  background-color: black;
+  background-color: $color-primary-black;
 }
 .mergedBtn{
-  background-color: $bgcolor-unavailableBadges;
+  background-color: $color-primary-green;
 }
 
 p{
@@ -313,21 +313,6 @@ p{
   }
 }
 
-.statusBadge {
-  padding: 4px 8px;
-  border-radius: $border-radius-lg;
-  font-size:12px;
-  white-space: nowrap;  
-
-  &.available {
-    background-color: black;
-    color:white;
-  }
-  &.not-available {
-    background-color: $bgcolor-unavailableBadges;
-    color:white;
-  }
-}
 
 
 
