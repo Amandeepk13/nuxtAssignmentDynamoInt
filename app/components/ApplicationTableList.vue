@@ -100,7 +100,7 @@ const handleMerge = async (applicationName) =>{
         <th>Repository Name</th>
         <th>Type</th>
           <th>Description</th>
-          <th>Token Status</th>
+      
           <th>Token Holder</th>
           <th>Taken At</th>
           <th>Actions</th>
@@ -115,9 +115,9 @@ const handleMerge = async (applicationName) =>{
             <span class="typeBadge" :class="application.type.toLowerCase()">{{ application.type}}</span>
           </td>
         <td> {{ application.description }}</td>
-        <td> <span class="statusBadge" :class="application.status.toLowerCase().replace(' ', '-')">{{ application.status }} </span>
+       
           
-        </td>
+        
         <td> {{ application.mergedBy || '-'}}</td>
 
         <td> 
@@ -244,7 +244,7 @@ td{
   background-color: black;
 }
 .mergedBtn{
-  background-color: $bgcolor-unavailableBadges;
+  background-color: green;
 }
 
 p{
