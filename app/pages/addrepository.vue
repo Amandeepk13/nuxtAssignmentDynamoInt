@@ -44,7 +44,7 @@ useHead({
       }
       p{
         font-size: $font-forDesc;
-        color:gray;
+        color:$color-gray;
         
       }
       

@@ -178,7 +178,7 @@ const handleMerge = async (applicationName) =>{
   overflow-y: hidden;
   box-shadow: $box-shadow-primary;
   margin: 20px auto;
-  background-color: white;
+  background-color: $color-primary-white;
 }
 
 .applicationTable{
@@ -211,7 +211,7 @@ td{
 .dateTimeBox{
   display:flex;
   flex-direction:column;
-  color:black;
+  color:$color-primary-black;
 }
 
 .dateText{
@@ -223,7 +223,7 @@ td{
 }
 
 .mergeBtn, .mergedBtn{
-    color: white;
+    color: $color-primary-white;
     border: none;
     padding: 8px 10px;
     cursor: pointer;
@@ -241,10 +241,10 @@ td{
 }
 
 .mergeBtn{
-  background-color: black;
+  background-color: $color-primary-black;
 }
 .mergedBtn{
-  background-color: green;
+  background-color: $color-primary-green;
 }
 
 p{
@@ -313,21 +313,6 @@ p{
   }
 }
 
-.statusBadge {
-  padding: 4px 8px;
-  border-radius: $border-radius-lg;
-  font-size:12px;
-  white-space: nowrap;  
-
-  &.available {
-    background-color: black;
-    color:white;
-  }
-  &.not-available {
-    background-color: $bgcolor-unavailableBadges;
-    color:white;
-  }
-}
 
 
 

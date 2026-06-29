@@ -203,7 +203,7 @@ const createRepo = async () => {
 
 <style lang="scss" scoped>
 .innerContainer {
-  background-color: white;
+  background-color: $color-primary-white;
   box-shadow: $box-shadow-lg;
   border-radius: $border-radius-md;
   width: 100%;
@@ -217,11 +217,11 @@ const createRepo = async () => {
   }
   p {
     font-size: $font-forDesc;
-    color: gray;
+    color: $color-gray;
   }
 
   .formCard {
-    background-color: white;
+    background-color: $color-primary-white;
     border-radius: $border-radius-md;
     padding: 0px 12px;
     margin: 0;
@@ -244,7 +244,7 @@ const createRepo = async () => {
           border: none;
           padding: 10px 18px;
           border-radius: $border-radius-md;
-          color:black;
+          color:$color-primary-black;
         }
         
         .tokenField {
@@ -269,8 +269,8 @@ const createRepo = async () => {
             padding: 10px 14px;
             border-radius: $border-radius-pill;
             font-weight: 600;
-            background-color: white;
-            color: black;
+            background-color: $color-primary-white;
+            color: $color-primary-black;
             min-height: 50px;
             cursor: pointer;
             min-width:0;
@@ -281,8 +281,8 @@ const createRepo = async () => {
           }
 
           button:hover {
-            background-color: black;
-            color: white;
+            background-color: $color-primary-black;
+            color: $color-primary-white;
           }
           button:disabled {
             opacity: 0.5;
@@ -328,7 +328,7 @@ const createRepo = async () => {
   border:none;
   border-radius: $border-radius-md;
   padding:10px 18px;
-  color: gray;
+  color: $color-gray;
   font-size: $font-forDesc;
 
   display:flex;
@@ -340,7 +340,7 @@ const createRepo = async () => {
   }
   &:focus{
     outline:2px solid black;
-    color: black;
+    color: $color-primary-black;
   }
 }
 
@@ -364,13 +364,13 @@ const createRepo = async () => {
     border-radius: $border-radius-lg;
     padding:10px 14px;
     cursor:pointer;
-    color: black !important;
+    color: $color-primary-black !important;
 
     &:hover{
       background-color: $bgcolor-ofEachFields;
     }
     &:focus, &:active {
-      color: black !important;
+      color: $color-primary-black !important;
     }
 
   }

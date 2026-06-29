@@ -112,7 +112,7 @@
   height:38px;
   border:none;
   border-radius:50%;
-  background:white;
+  background:$color-primary-white;
   box-shadow:0 2px 10px rgba(0,0,0,.15);
   display:flex;
   align-items:center;
